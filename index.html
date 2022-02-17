@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Company Directory</title>
+  <link rel="stylesheet" href="libs/css/bootstrap.min.css">
+  <link rel="stylesheet" href="libs/css/font-awesome.min.css">
+  <link rel="stylesheet" href="libs/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" href="libs/css/styles.css">
+  <link rel="stylesheet" href="libs/css/responsive.bootstrap5.min.css">
+  <link rel="stylesheet" href="libs/css/fixedHeader.bootstrap5.min.css">
+  <script src="libs/js/jquery-3.5.1.js"></script>
+  <script src="libs/js/bootstrap.min.js"></script>
+  <script src="libs/js/jquery.dataTables.min.js"></script>
+  <script src="libs/js/dataTables.bootstrap5.min.js"></script>
+  <script src="libs/js/dataTables.fixedHeader.min.js"></script>
+  <!-- <script src="libs/js/responsive.bootstrap5.min.js"></script> -->
+  <script src="libs/js/dataTables.responsive.min.js"></script>
+
+
+
+</head>
+<body>
+  
+  <div class="container">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+      <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <span class="fs-4">Company Directory</span>
+      </a>
+      <button type="button" id="add_button" data-bs-toggle="modal" data-bs-target="#userModal" class="btn btn-outline-secondary">Add User</button>
+    </header>
+  </div>
+
+  <div class="b-example-divider"></div>
+
+
+  <table id="user_table" class="display table table-striped table-hover" style="width:100%">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Last Name</th>
+        <th>First Name</th>
+        <th>Job Title</th>
+        <th>Email</th>
+        <th>Department</th>
+        <th>Location</th>
+        <th>Edit</th>
+        <th>Delete</th>
+
+      </tr>
+    </thead>
+  </table>
+  </div>
+  <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <form method="post" id="user_form" enctype="multipart/form-data">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add User</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <label>Enter First Name *</label>
+            <input type="text" name="firstName" id="firstname" class="form-control"><br>
+            <label>Enter Last Name *</label>
+            <input type="text" name="lastName" id="lastname" class="form-control"><br>
+            <label>Enter Job Title </label>
+            <input type="text" name="jobTitle" id="jobtitle" class="form-control"><br>
+            <label>Enter Email *</label>
+            <input type="text" name="email" id="email" class="form-control"><br>
+            <label>Select Department *</label>
+            <select class="form-select" name="department" id="department" aria-label="form select">
+              <option value="" selected disabled>Select Department</option>
+              <option value="1">Human Resources</option>
+              <option value="2">Sales</option>
+              <option value="3">Marketing</option>
+              <option value="4">Legal</option>
+              <option value="5">Services</option>
+              <option value="6">Research and Development</option>
+              <option value="7">Product Management</option>
+              <option value="8">Training</option>
+              <option value="9">Support</option>
+              <option value="10">Engineering</option>
+              <option value="11">Accounting</option>
+              <option value="12">Business Development</option>
+            </select><br>
+          </div>
+          <div class="modal-footer">
+            <input type="hidden" name="user-id" id="user-id">
+            <input type="hidden" name="operation" id="operation">
+            <input type="submit" name="action" id="action" class="btn btn-primary" value="Add">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <script src="libs/js/script.js"></script>
+</body>
+</html>
+
