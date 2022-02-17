@@ -1,5 +1,7 @@
 <?php
 
+
+
 	// example use from browser
 	// http://localhost/companydirectory/libs/php/insertUser.php?firstName=A%20User&userID=<id>
 
@@ -13,6 +15,7 @@
 	// this includes the login details
 	
 	include("config.php");
+
 
 	header('Content-Type: application/json; charset=UTF-8');
 
@@ -36,12 +39,29 @@
 
 	// SQL statement accepts parameters and so is prepared to avoid SQL injection.
 	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
+  if ($_POST['operation']=="Add") {
+    $query = $conn->prepare('INSERT INTO personnel (firstName, lastName, jobTitle, email, departmentID) VALUES(?,?,?,?,?)');
 
-	$query = $conn->prepare('INSERT INTO personnel (firstName, lastName, jobTitle, email, departmentID) VALUES(?,?,?,?,?)');
+    $query->bind_param("ssssi", $_REQUEST['firstName'], $_REQUEST['lastName'], $_REQUEST['jobTitle'], $_REQUEST['email'], $_REQUEST['department']);
+  
+    $query->execute();
+  }
 
-	$query->bind_param("ssssi", $_REQUEST['firstName'], $_REQUEST['lastName'], $_REQUEST['jobTitle'], $_REQUEST['email'], $_REQUEST['department']);
+  if ($_POST['operation']=="Edit") {
 
-	$query->execute();
+    $id = $_REQUEST['user-id'];
+    $lastName = $_REQUEST['lastName'];
+    $firstName = $_REQUEST['firstName'];
+    $jobTitle = $_REQUEST['jobTitle'];
+    $email = $_REQUEST['email'];
+    $department = $_REQUEST['department'];
+
+    $query = $conn->prepare("UPDATE `personnel` SET `lastName` = '$lastName', `firstName`='$firstName', `jobTitle`='$jobTitle', `email`='$email', `departmentID`='$department' WHERE id=$id");
+
+  
+    $query->execute();
+  }
+
   
   // Will maybe reuse the 2 blocks below for another file later (adds a new department or new location)
 
