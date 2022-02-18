@@ -1,3 +1,7 @@
+body {
+	overflow: hidden;
+}
+
 #user_table,
 #user_table_length,
 #user_table_info,
@@ -6,12 +10,16 @@ ul.pagination {
 	padding: 6px 10px 0 10px;
 }
 
-/* #user_table {
-	width: 100 vw;
-} */
+th {
+	font-size: 0.85em;
+}
+
+td {
+	font-size: 0.85em;
+}
 
 .b-example-divider {
-	height: 3rem;
+	height: 2.5rem;
 	background-color: rgba(0, 0, 0, 0.1);
 	margin-bottom: 10px;
 	border: solid rgba(0, 0, 0, 0.15);

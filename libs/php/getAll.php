@@ -66,8 +66,8 @@
     $sub_array[] = $row["department"];
     $sub_array[] = $row["location"];
     $sub_array[] = $row["jobTitle"];
-    $sub_array[] = '<button type="button" name="update" id="'.$row["id"].'" class="btn btn-primary btn-sm update">Edit</button>';
-    $sub_array[] = '<button type="button" name="delete" id="'.$row["id"].'" class="btn btn-danger btn-sm delete">Delete</button>';
+    $sub_array[] = '<button type="button" name="update" id="'.$row["id"].'" class="btn btn-primary btn-sm fa-solid fa-pen-to-square update-user"></button>';
+    $sub_array[] = '<button type="button" name="delete" id="'.$row["id"].'" class="btn btn-danger btn-sm fa-solid fa-trash-can delete-user"></button>';
     $data[] = $sub_array;
 
 	}

@@ -1,7 +1,7 @@
 <?php
 
 	// example use from browser
-	// http://localhost/companydirectory/libs/php/insertDepartment.php?name=New%20Department&locationID=<id>
+	// http://localhost/companydirectory/libs/php/insertDepartment.php?
 
 	// remove next two lines for production
 	
@@ -36,11 +36,11 @@
 
 	// SQL statement accepts parameters and so is prepared to avoid SQL injection.
 	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
-  if ($_POST['dep-operation']=="Add") {
+  if ($_POST['loc-operation']=="Add") {
     
-	$query = $conn->prepare('INSERT INTO department (name, locationID) VALUES(?,?)');
+	$query = $conn->prepare('INSERT INTO location (name) VALUES(?)');
 
-	$query->bind_param("si", $_REQUEST['dep-name'], $_REQUEST['loc-select']);
+	$query->bind_param("s", $_REQUEST['loc-name']);
 
 	$query->execute();
   }
