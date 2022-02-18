@@ -217,49 +217,53 @@ $(document).ready(function () {
     });
   });
 
+  // Checks count to make sure no users in department, then if 0 removes department then updates select.
   $(document).on('click', '#dep-del-btn', function (event) {
     event.preventDefault();
-    const depID = $("#dep-sel").val();
-
+    const departmentId = $("#dep-sel").val();
     $.ajax({
       url: "libs/php/countUsersInDepartment.php",
       method: "POST",
-      data: { id: depID },
-      success: function (data) {
-        console.log(data)
-        alert("yes")
+      data: { id: departmentId },
+      success: function (result) {
+        if (result.data > 0) {
+          $.alert({
+            title: 'Unable To Delete!',
+            content: 'There are still users in this department, remove the users first or change their department',
+          });
+        } else {
+          $.confirm({
+            title: 'Delete Department!',
+            content: 'Are you sure you want to delete this department?<br>This action cannot be undone!',
+            buttons: {
+              confirm: {
+                btnClass: 'btn-danger',
+                action: function () {
+                  $.ajax({
+                    url: "libs/php/deleteDepartment.php",
+                    method: "POST",
+                    data: { id: departmentId },
+                    success: function (data) {
+                      $('#dep_del_form')[0].reset();
+                      $('#depDeleteModal').modal('hide');
+                      dataTable.ajax.reload();
+                      $("#dep-sel").empty();
+                      updateDepartments();
+                    }
+                  });
+                  $.alert('Department Deleted!');
+                },
+              },
+              cancel: {
+                btnClass: 'btn-secondary',
+                action: function () {
+                },
+              }
+            }
+          });
+        }
       }
     })
-
-
-
-
-
-    // $.confirm({
-    //   title: 'Delete User!',
-    //   content: 'Are you sure you want to delete this user?<br>This action cannot be undone!',
-    //   buttons: {
-    //     confirm: {
-    //       btnClass: 'btn-danger',
-    //       action: function () {
-    //         $.ajax({
-    //           url: "libs/php/deleteUser.php",
-    //           method: "POST",
-    //           data: { id: userId },
-    //           success: function (data) {
-    //             dataTable.ajax.reload();
-    //           }
-    //         });
-    //         $.alert('Deleted!');
-    //       },
-    //     },
-    //     cancel: {
-    //       btnClass: 'btn-secondary',
-    //       action: function () {
-    //       },
-    //     }
-    //   }
-    // });
   });
 
 });
