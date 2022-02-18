@@ -62,10 +62,10 @@
     $sub_array[] = $row["id"];
     $sub_array[] = $row["lastName"];
     $sub_array[] = $row["firstName"];
-    $sub_array[] = $row["jobTitle"];
-    $sub_array[] = $row["email"];
+    $sub_array[] = $row["email"] . '<a href="mailto:' . $row["email"] . '"><button type="button" id="mail-btn" class="btn btn-secondary btn-sm fa-regular fa-envelope"></button></a>';
     $sub_array[] = $row["department"];
     $sub_array[] = $row["location"];
+    $sub_array[] = $row["jobTitle"];
     $sub_array[] = '<button type="button" name="update" id="'.$row["id"].'" class="btn btn-primary btn-sm update">Edit</button>';
     $sub_array[] = '<button type="button" name="delete" id="'.$row["id"].'" class="btn btn-danger btn-sm delete">Delete</button>';
     $data[] = $sub_array;
