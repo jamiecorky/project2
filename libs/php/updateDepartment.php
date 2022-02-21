@@ -36,17 +36,6 @@
 
 	// SQL statement accepts parameters and so is prepared to avoid SQL injection.
 	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
-  if ($_POST['dep-operation']=="Add") {
-    
-	$query = $conn->prepare('INSERT INTO department (name, locationID) VALUES(?,?)');
-
-	$query->bind_param("si", $_REQUEST['dep-name'], $_REQUEST['loc-select']);
-
-	$query->execute();
-  
-}
-
-if ($_POST['dep-edit-operation']=="Edit") {
 
   $id = $_REQUEST['depId'];
   $location = $_REQUEST['locId'];
@@ -60,10 +49,6 @@ if ($_POST['dep-edit-operation']=="Edit") {
     $query->execute();
   }
     
-
-  
-}
-
 
 	if (false === $query) {
 

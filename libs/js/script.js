@@ -10,7 +10,7 @@ function updateLocations() {
       if (result.status.name == "ok") {
         console.log(result);
         for (let i = 0; i < result.data.length; i++) {
-          $('#loc-select').append(`<option value="${result.data[i].id}">${result.data[i].name}</option>`);
+          $('.location-select').append(`<option value="${result.data[i].id}">${result.data[i].name}</option>`);
         }
       }
     },
@@ -102,6 +102,7 @@ $(document).ready(function () {
     }
   });
 
+  // Department Form Add
   $(document).on('submit', '#dep_form', function (event) {
     event.preventDefault();
     $(".department-select").empty();
@@ -109,7 +110,7 @@ $(document).ready(function () {
     $('#dep-operation').val("Add");
     $('#dep-title').text("Add Department Details");
     const depName = $('#dep-name').val();
-    const locID = $('#loc-select').val();
+    const locID = $('.loc-select').val();
 
     // Makes sure that the fields below are filled out before submitting
     if (depName != '' && locID != 'Select Location') {
@@ -133,10 +134,10 @@ $(document).ready(function () {
     }
   });
 
-  // Location form
+  // Location form Add
   $(document).on('submit', '#loc_form', function (event) {
     event.preventDefault();
-    $("#loc-select").empty();
+    $(".location-select").empty();
     $('#loc-action').val("Add");
     $('#loc-operation').val("Add");
     $('#loc-title').text("Add Location Details");
@@ -217,6 +218,73 @@ $(document).ready(function () {
     });
   });
 
+  $('#dep-select-edit').change(function () {
+    $('#dep-edit-name').val($('#dep-select-edit option:selected').text());
+  })
+
+
+
+  // Department Form Edit on Submit
+  $(document).on('submit', '#dep_edit_form', function (event) {
+    event.preventDefault();
+
+    const depId = $('#dep-select-edit').val();
+    const depName = $('#dep-edit-name').val();
+    const locId = $('#loc-edit-select').val();
+    console.log(depId)
+    console.log(depName)
+    console.log(locId)
+
+    // Makes sure that the fields below are filled out before submitting
+    if (depName == '' && locId == null) {
+      $.alert({
+        title: 'Cannot Update!',
+        content: 'You must input new deparment name, or update the location.',
+      });
+    } else if (depName == '') {
+      $.alert({
+        title: 'Cannot Update!',
+        content: 'You must input the new department name.',
+      });
+    } else {
+      $.confirm({
+        title: 'Update Department!',
+        content: 'Are you sure you want to update this department?<br>This action will update all users also!',
+        buttons: {
+          confirm: {
+            btnClass: 'btn-danger',
+            action: function () {
+              $.ajax({
+                url: "libs/php/updateDepartment.php",
+                method: "POST",
+                data: {
+                  depId: depId,
+                  locId: locId,
+                  name: depName
+                },
+                dataType: "json",
+                success: function (data) {
+                  $('#dep_edit_form')[0].reset();
+                  $('#depEditModal').modal('hide');
+                  $(".department-select").empty();
+                  updateDepartments()
+                  dataTable.ajax.reload();
+                  $.alert('Updated!');
+                }
+              });
+
+            },
+          },
+          cancel: {
+            btnClass: 'btn-secondary',
+            action: function () {
+            },
+          }
+        }
+      });
+    }
+  });
+
   // Checks count to make sure no users in department, then if 0 removes department then updates select.
   $(document).on('click', '#dep-del-btn', function (event) {
     event.preventDefault();
@@ -229,7 +297,7 @@ $(document).ready(function () {
         if (result.data > 0) {
           $.alert({
             title: 'Unable To Delete!',
-            content: 'There are still users in this department, remove the users first or change their department',
+            content: 'There are still users in this department, remove the users first or change their department.',
           });
         } else {
           $.confirm({
@@ -252,6 +320,55 @@ $(document).ready(function () {
                     }
                   });
                   $.alert('Department Deleted!');
+                },
+              },
+              cancel: {
+                btnClass: 'btn-secondary',
+                action: function () {
+                },
+              }
+            }
+          });
+        }
+      }
+    })
+  });
+
+  // Deleting a location
+  $(document).on('click', '#loc-del-btn', function (event) {
+    event.preventDefault();
+    const locationId = $("#loc-sel").val();
+    $.ajax({
+      url: "libs/php/countDepartmentsInLocation.php",
+      method: "POST",
+      data: { id: locationId },
+      success: function (result) {
+        if (result.data > 0) {
+          $.alert({
+            title: 'Unable To Delete!',
+            content: 'There are still departments in this location , remove the departments first or change their location.',
+          });
+        } else {
+          $.confirm({
+            title: 'Delete Location!',
+            content: 'Are you sure you want to delete this location?<br>This action cannot be undone!',
+            buttons: {
+              confirm: {
+                btnClass: 'btn-danger',
+                action: function () {
+                  $.ajax({
+                    url: "libs/php/deleteLocation.php",
+                    method: "POST",
+                    data: { id: locationId },
+                    success: function (data) {
+                      $('#loc_del_form')[0].reset();
+                      $('#locDeleteModal').modal('hide');
+                      dataTable.ajax.reload();
+                      $("#loc-sel").empty();
+                      updateLocations();
+                    }
+                  });
+                  $.alert('Location Deleted!');
                 },
               },
               cancel: {

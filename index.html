@@ -46,7 +46,7 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="Department dropdown">
                   <li><a data-bs-toggle="modal" data-bs-target="#depModal" class="dropdown-item" id="add-dep" href="#">Add Department</a></li>
-                  <li><a data-bs-toggle="modal" data-bs-target="#depModal" class="dropdown-item" id="edit-dep" href="#">Edit Department</a></li>
+                  <li><a data-bs-toggle="modal" data-bs-target="#depEditModal" class="dropdown-item" id="edit-dep" href="#">Edit Department</a></li>
                   <li><a data-bs-toggle="modal" data-bs-target="#depDeleteModal" class="dropdown-item" id="delete-dep" href="#">Delete Department</a></li>
                 </ul>
               </li>
@@ -59,9 +59,9 @@
                   Location
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="Location dropdown">
-                  <li><a id="add-loc-link" data-bs-toggle="modal" data-bs-target="#locModal" class="dropdown-item" href="#">Add Location</a></li>
-                  <li><a class="dropdown-item" id="edit-loc" href="#">Edit Location</a></li>
-                  <li><a class="dropdown-item" id="delete-loc" href="#">Delete Location</a></li>
+                  <li><a data-bs-toggle="modal" data-bs-target="#locModal" class="dropdown-item" id="add-loc" href="#">Add Location</a></li>
+                  <li><a data-bs-toggle="modal" data-bs-target="#locEditModal" class="dropdown-item" id="edit-loc" href="#">Edit Location</a></li>
+                  <li><a data-bs-toggle="modal" data-bs-target="#locDeleteModal" class="dropdown-item" id="delete-loc" href="#">Delete Location</a></li>
                 </ul>
               </li>
             </ul>
@@ -127,7 +127,7 @@
     </div>
   </div>
 
-  <!-- Modal for adding / editing departments -->
+  <!-- Modal for adding departments -->
   <div class="modal fade" id="depModal" tabindex="-1" aria-labelledby="depModal" aria-hidden="true">
     <div class="modal-dialog">
       <form method="post" id="dep_form" enctype="multipart/form-data">
@@ -140,7 +140,7 @@
             <label>Enter Department Name *</label>
             <input type="text" name="dep-name" id="dep-name" class="form-control"><br>
             <label>Select Location *</label>
-            <select class="form-select" name="loc-select" id="loc-select" aria-label="form select">
+            <select class="form-select location-select" name="loc-select" id="loc-select" aria-label="form select">
               <option value="" selected disabled>Select Location</option>
             </select><br>
           </div>
@@ -154,6 +154,38 @@
       </form>
     </div>
   </div>
+
+    <!-- Modal for updating departments -->
+    <div class="modal fade" id="depEditModal" tabindex="-1" aria-labelledby="depEditModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <form method="post" id="dep_edit_form" enctype="multipart/form-data">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="dep-edit-title">Edit Department Details</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <label>Select Department To Update *</label>
+              <select class="form-select department-select" name="department" id="dep-select-edit" aria-label="form select">
+                <option value="" selected disabled>Select Department</option>
+              </select><hr>
+              <label>Update Department Name *</label>
+              <input type="text" name="dep-edit-name" id="dep-edit-name" class="form-control"><br>
+              <label>Update Location *</label>
+              <select class="form-select location-select" name="loc-edit-select" id="loc-edit-select" aria-label="form select">
+                <option value="" selected disabled>Select Location</option>
+              </select><br>
+            </div>
+            <div class="modal-footer">
+              <input type="hidden" name="dep-id" id="dep-id">
+              <input type="hidden" name="dep-operation" id="dep-edit-operation" value="Edit">
+              <input type="submit" name="action" id="dep-action" class="btn btn-danger" value="Save">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <!-- Modal for deleting departments -->
     <div class="modal fade" id="depDeleteModal" tabindex="-1" aria-labelledby="depModal" aria-hidden="true">
@@ -181,7 +213,7 @@
       </div>
     </div>
 
-  <!-- Modal for adding / editing departments -->
+  <!-- Modal for adding / editing locations -->
   <div class="modal fade" id="locModal" tabindex="-1" aria-labelledby="locModal" aria-hidden="true">
     <div class="modal-dialog">
       <form method="post" id="loc_form" enctype="multipart/form-data">
@@ -205,7 +237,31 @@
     </div>
   </div>
 
-
+  <!-- Modal for deleting locations -->
+  <div class="modal fade" id="locDeleteModal" tabindex="-1" aria-labelledby="locModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <form method="post" id="loc_del_form" enctype="multipart/form-data">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loc-del-title">Delete Location</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <label>Select Location *</label>
+            <select class="form-select location-select" id="loc-sel" name="Location" aria-label="form select">
+              <option value="" selected disabled>Select Location</option>
+            </select><br>
+          </div>
+          <div class="modal-footer">
+            <input type="hidden" name="loc-id" id="loc-id">
+            <input type="hidden" name="loc-operation" id="loc-operation">
+            <input type="submit" name="action" id="loc-del-btn" class="btn btn-danger" value="Delete">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <script src="libs/js/script.js"></script>
 </body>
