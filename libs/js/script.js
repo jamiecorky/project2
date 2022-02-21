@@ -131,7 +131,6 @@ $(document).ready(function () {
                   email: email,
                   department: departmentID
                 },
-
                 success: function (data) {
                   $('#user_edit_form')[0].reset();
                   $('#userEditModal').modal('hide');
@@ -147,7 +146,6 @@ $(document).ready(function () {
           }
         }
       });
-
     }
     else {
       $.alert("First Name, Last Name, Email and Department are Required");
@@ -323,7 +321,6 @@ $(document).ready(function () {
                   $.alert('Updated!');
                 }
               });
-
             },
           },
           cancel: {
@@ -345,7 +342,7 @@ $(document).ready(function () {
       method: "POST",
       data: { id: departmentId },
       success: function (result) {
-        if (result.data > 0) {
+        if (result.data != "0") {
           $.alert({
             title: 'Unable To Delete!',
             content: 'There are still users in this department, remove the users first or change their department.',
@@ -452,7 +449,8 @@ $(document).ready(function () {
       method: "POST",
       data: { id: locationId },
       success: function (result) {
-        if (result.data > 0) {
+        console.log(result.data)
+        if (result.data != "0") {
           $.alert({
             title: 'Unable To Delete!',
             content: 'There are still departments in this location , remove the departments first or change their location.',
