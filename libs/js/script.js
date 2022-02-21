@@ -8,7 +8,6 @@ function updateLocations() {
     dataType: 'json',
     success: function (result) {
       if (result.status.name == "ok") {
-        console.log(result);
         for (let i = 0; i < result.data.length; i++) {
           $('.location-select').append(`<option value="${result.data[i].id}">${result.data[i].name}</option>`);
         }
@@ -28,7 +27,6 @@ function updateDepartments() {
     dataType: 'json',
     success: function (result) {
       if (result.status.name == "ok") {
-        console.log(result);
         for (let i = 0; i < result.data.length; i++) {
           $('.department-select').append(`<option value="${result.data[i].id}">${result.data[i].name}</option>`);
         }
@@ -72,7 +70,7 @@ $(document).ready(function () {
   updateLocations();
   updateDepartments();
 
-
+  // Add User
   $(document).on('submit', '#user_form', function (event) {
     event.preventDefault();
     const firstName = $('#firstname').val();
@@ -84,6 +82,7 @@ $(document).ready(function () {
     // Makes sure that the fields below are filled out before submitting
     if (firstName != '' && lastName != '' && email != '' && departmentID != 'Select Department') {
       const userId = $(this).attr("id");
+
       $.ajax({
         url: "libs/php/insertUser.php",
         method: 'POST',
@@ -98,11 +97,65 @@ $(document).ready(function () {
       });
     }
     else {
-      alert("First Name, Last Name, Email and Department are Required");
+      $.alert("First Name, Last Name, Email and Department are Required");
     }
   });
 
-  // Department Form Add
+  // Update user
+  $(document).on('submit', '#user_edit_form', function (event) {
+    event.preventDefault();
+    const firstName = $('#firstname-edit').val();
+    const lastName = $('#lastname-edit').val();
+    const email = $('#email-edit').val();
+    const jobTitle = $('#jobtitle-edit').val();
+    const departmentID = $('.department-select').val();
+    const userId = $('#user-edit-id').val();
+
+    // Makes sure that the fields below are filled out before submitting
+    if (firstName != '' && lastName != '' && email != '' && departmentID != 'Select Department') {
+      $.confirm({
+        title: 'Update User!',
+        content: `Are you sure you want to update the details of this user, current details will be replaced?`,
+        buttons: {
+          confirm: {
+            btnClass: 'btn-danger',
+            action: function () {
+              $.ajax({
+                url: "libs/php/updateUser.php",
+                method: 'POST',
+                data: {
+                  id: userId,
+                  lastName: lastName,
+                  firstName: firstName,
+                  jobTitle: jobTitle,
+                  email: email,
+                  department: departmentID
+                },
+
+                success: function (data) {
+                  $('#user_edit_form')[0].reset();
+                  $('#userEditModal').modal('hide');
+                  dataTable.ajax.reload();
+                }
+              });
+            },
+          },
+          cancel: {
+            btnClass: 'btn-secondary',
+            action: function () {
+            },
+          }
+        }
+      });
+
+    }
+    else {
+      $.alert("First Name, Last Name, Email and Department are Required");
+    }
+  });
+
+
+  // Adds Department after filling form
   $(document).on('submit', '#dep_form', function (event) {
     event.preventDefault();
     $(".department-select").empty();
@@ -130,17 +183,17 @@ $(document).ready(function () {
       });
     }
     else {
-      alert("Department Name and Location are Required");
+      $.alert("Department Name and Location are Required");
     }
   });
 
-  // Location form Add
+  // Adds location after filling form
   $(document).on('submit', '#loc_form', function (event) {
     event.preventDefault();
     $(".location-select").empty();
     $('#loc-action').val("Add");
     $('#loc-operation').val("Add");
-    $('#loc-title').text("Add Location Details");
+    $('#loc-title').text("Add Location");
     const locName = $('#loc-name').val();
 
     // Makes sure that the fields below are filled out before submitting
@@ -161,10 +214,11 @@ $(document).ready(function () {
       });
     }
     else {
-      alert("Location is Required");
+      $.alert("Location is Required");
     }
   });
 
+  // Opens the update user modal and fills in the fields with the users current details
   $(document).on('click', '.update-user', function () {
     const userId = $(this).attr("id");
     $.ajax({
@@ -173,22 +227,19 @@ $(document).ready(function () {
       data: { id: userId },
       dataType: "json",
       success: function (data) {
-        $('#userModal').modal('show');
+        $('#userEditModal').modal('show');
         const result = data.data.personnel[0];
-        console.log(result)
-        $('#firstname').val(result.firstName);
-        $('#lastname').val(result.lastName);
-        $('#jobtitle').val(result.jobTitle);
-        $('#email').val(result.email);
+        $('#firstname-edit').val(result.firstName);
+        $('#lastname-edit').val(result.lastName);
+        $('#jobtitle-edit').val(result.jobTitle);
+        $('#email-edit').val(result.email);
         $('.department-select').val(result.departmentID);
-        $('#user-title').text("Edit User Details");
-        $('#user-id').val(result.id);
-        $('#action').val("Save");
-        $('#operation').val("Edit");
+        $('#user-edit-id').val(result.id);
       }
     });
   });
 
+  // Deletes a user by clicking the trash button
   $(document).on('click', '.delete-user', function () {
     const userId = $(this).attr("id");
     $.confirm({
@@ -218,10 +269,10 @@ $(document).ready(function () {
     });
   });
 
+  // Updates the text field to match the selected department to edit to avoid users trying to change it to a blank field if only updating location
   $('#dep-select-edit').change(function () {
     $('#dep-edit-name').val($('#dep-select-edit option:selected').text());
   })
-
 
 
   // Department Form Edit on Submit
@@ -249,7 +300,7 @@ $(document).ready(function () {
     } else {
       $.confirm({
         title: 'Update Department!',
-        content: 'Are you sure you want to update this department?<br>This action will update all users also!',
+        content: `Are you sure you want to update this department?<br>This action will update the details for all users in ${$('#dep-select-edit option:selected').text()}!`,
         buttons: {
           confirm: {
             btnClass: 'btn-danger',
@@ -332,6 +383,64 @@ $(document).ready(function () {
         }
       }
     })
+  });
+
+  // Location Form Edit on Submit
+  $(document).on('submit', '#loc_edit_form', function (event) {
+    event.preventDefault();
+
+    const locId = $('#loc-select-edit').val();
+    const locName = $('#loc-edit-name').val();
+    console.log(locId)
+    console.log(locName)
+
+    // Makes sure that the fields below are filled out before submitting
+    if (locName == '' && locId == null) {
+      $.alert({
+        title: 'Cannot Update!',
+        content: "You must select the location you wish to update, and input it's new name.",
+      });
+    } else if (locName == '') {
+      $.alert({
+        title: 'Cannot Update!',
+        content: 'You must input the new location name.',
+      });
+    } else {
+      $.confirm({
+        title: 'Update Department!',
+        content: `Are you sure you want to update this location?<br>This action will update the location of all ${$('#loc-select-edit option:selected').text()} departments!`,
+        buttons: {
+          confirm: {
+            btnClass: 'btn-danger',
+            action: function () {
+              $.ajax({
+                url: "libs/php/updateLocation.php",
+                method: "POST",
+                data: {
+                  name: locName,
+                  locId: locId
+                },
+                dataType: "json",
+                success: function (data) {
+                  $('#loc_edit_form')[0].reset();
+                  $('#locEditModal').modal('hide');
+                  $(".location-select").empty();
+                  updateLocations()
+                  dataTable.ajax.reload();
+                  $.alert('Updated!');
+                }
+              });
+
+            },
+          },
+          cancel: {
+            btnClass: 'btn-secondary',
+            action: function () {
+            },
+          }
+        }
+      });
+    }
   });
 
   // Deleting a location

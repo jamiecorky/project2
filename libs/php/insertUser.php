@@ -7,8 +7,8 @@
 
 	// remove next two lines for production
 	
-	ini_set('display_errors', 'On');
-	error_reporting(E_ALL);
+	// ini_set('display_errors', 'On');
+	// error_reporting(E_ALL);
 
 	$executionStartTime = microtime(true);
 	
@@ -39,28 +39,13 @@
 
 	// SQL statement accepts parameters and so is prepared to avoid SQL injection.
 	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
-  if ($_POST['operation']=="Add") {
-    $query = $conn->prepare('INSERT INTO personnel (firstName, lastName, jobTitle, email, departmentID) VALUES(?,?,?,?,?)');
 
-    $query->bind_param("ssssi", $_REQUEST['firstName'], $_REQUEST['lastName'], $_REQUEST['jobTitle'], $_REQUEST['email'], $_REQUEST['department']);
-  
-    $query->execute();
-  }
+  $query = $conn->prepare('INSERT INTO personnel (firstName, lastName, jobTitle, email, departmentID) VALUES(?,?,?,?,?)');
 
-  if ($_POST['operation']=="Edit") {
+  $query->bind_param("ssssi", $_REQUEST['firstName'], $_REQUEST['lastName'], $_REQUEST['jobTitle'], $_REQUEST['email'], $_REQUEST['department']);
 
-    $id = $_REQUEST['user-id'];
-    $lastName = $_REQUEST['lastName'];
-    $firstName = $_REQUEST['firstName'];
-    $jobTitle = $_REQUEST['jobTitle'];
-    $email = $_REQUEST['email'];
-    $department = $_REQUEST['department'];
+  $query->execute();
 
-    $query = $conn->prepare("UPDATE `personnel` SET `lastName` = '$lastName', `firstName`='$firstName', `jobTitle`='$jobTitle', `email`='$email', `departmentID`='$department' WHERE id=$id");
-
-  
-    $query->execute();
-  }
 
   
   // Will maybe reuse the 2 blocks below for another file later (adds a new department or new location)

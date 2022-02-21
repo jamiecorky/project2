@@ -93,7 +93,7 @@
   </table>
   </div>
   
-  <!-- Modal for adding / editing users -->
+  <!-- Modal for adding -->
   <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModal" aria-hidden="true">
     <div class="modal-dialog">
       <form method="post" id="user_form" enctype="multipart/form-data">
@@ -118,7 +118,6 @@
           </div>
           <div class="modal-footer">
             <input type="hidden" name="user-id" id="user-id">
-            <input type="hidden" name="operation" id="operation">
             <input type="submit" name="action" id="action" class="btn btn-primary" value="Add">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           </div>
@@ -126,6 +125,39 @@
       </form>
     </div>
   </div>
+
+    <!-- Modal for editing users -->
+    <div class="modal fade" id="userEditModal" tabindex="-1" aria-labelledby="userEditModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <form method="post" id="user_edit_form" enctype="multipart/form-data">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="user-edit-title">Update User</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <label>Enter First Name *</label>
+              <input type="text" name="firstName" id="firstname-edit" class="form-control"><br>
+              <label>Enter Last Name *</label>
+              <input type="text" name="lastName" id="lastname-edit" class="form-control"><br>
+              <label>Enter Job Title </label>
+              <input type="text" name="jobTitle" id="jobtitle-edit" class="form-control"><br>
+              <label>Enter Email *</label>
+              <input type="text" name="email" id="email-edit" class="form-control"><br>
+              <label>Select Department *</label>
+              <select class="form-select department-select" name="department" aria-label="form select">
+                <option value="" selected disabled>Select Department</option>
+              </select><br>
+            </div>
+            <div class="modal-footer">
+              <input type="hidden" name="user-edit-id" id="user-edit-id">
+              <input type="submit" name="action" id="action" class="btn btn-danger" value="Update">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>  
 
   <!-- Modal for adding departments -->
   <div class="modal fade" id="depModal" tabindex="-1" aria-labelledby="depModal" aria-hidden="true">
@@ -213,13 +245,13 @@
       </div>
     </div>
 
-  <!-- Modal for adding / editing locations -->
+  <!-- Modal for adding locations -->
   <div class="modal fade" id="locModal" tabindex="-1" aria-labelledby="locModal" aria-hidden="true">
     <div class="modal-dialog">
       <form method="post" id="loc_form" enctype="multipart/form-data">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="loc-title">Add Location Details</h5>
+            <h5 class="modal-title" id="loc-title">Add Location</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -230,6 +262,34 @@
             <input type="hidden" name="loc-id" id="loc-id">
             <input type="hidden" name="loc-operation" id="loc-operation">
             <input type="submit" name="action" id="loc-action" class="btn btn-primary" value="Add">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal for updating locations -->
+  <div class="modal fade" id="locEditModal" tabindex="-1" aria-labelledby="locEditModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <form method="post" id="loc_edit_form" enctype="multipart/form-data">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loc-edit-title">Edit Location Name</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <label>Select Location To Update *</label>
+            <select class="form-select location-select" name="location" id="loc-select-edit" aria-label="form select">
+              <option value="" selected disabled>Select Location</option>
+            </select><hr>
+            <label>Update Location Name *</label>
+            <input type="text" name="loc-edit-name" id="loc-edit-name" class="form-control"><br>
+          </div>
+          <div class="modal-footer">
+            <input type="hidden" name="loc-id" id="loc-id">
+            <input type="hidden" name="loc-operation" id="loc-edit-operation" value="Edit">
+            <input type="submit" name="action" id="loc-action" class="btn btn-danger" value="Save">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
