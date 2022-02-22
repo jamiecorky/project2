@@ -94,9 +94,12 @@ $(document).ready(function () {
         title: 'Try Again!',
         content: 'Select a department and/or location to filter the results first.',
       });
-      $('#user_table').DataTable().destroy();
-      fill_datatable();
     }
+  });
+
+  $('#reset').click(function () {
+    $('#user_table').DataTable().destroy();
+    fill_datatable();
   });
 
   // Add User

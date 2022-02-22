@@ -24,6 +24,16 @@ hr {
 	border-top: 1px dashed #000000;
 }
 
+div#user_table_filter {
+	display: flex;
+	justify-content: center;
+}
+
+div#user_table_length {
+	display: flex;
+	justify-content: center;
+}
+
 .filter-search {
 	display: flex;
 }
