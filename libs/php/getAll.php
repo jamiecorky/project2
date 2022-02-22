@@ -34,7 +34,30 @@
 
 	// SQL does not accept parameters and so is not prepared
 
-	$query = 'SELECT p.id, p.lastName, p.firstName, p.jobTitle, p.email, d.name as department, l.name as location FROM personnel p LEFT JOIN department d ON (d.id = p.departmentID) LEFT JOIN location l ON (l.id = d.locationID) ORDER BY p.lastName, p.firstName, d.name, l.name';
+  $column = array('lastName', 'firstName', 'jobTitle', 'email', 'department', 'location');
+
+	$query = 'SELECT p.id, p.lastName, p.firstName, p.jobTitle, p.email, d.name as department, l.name as location FROM personnel p LEFT JOIN department d ON (d.id = p.departmentID) LEFT JOIN location l ON (l.id = d.locationID)';
+  
+
+  if(isset($_POST['filter_department'], $_POST['filter_location']) && $_POST['filter_department'] != '' && $_POST['filter_location'] != '') 
+  {
+    $query .= 'WHERE departmentId = "' . $_POST['filter_department'] . '" AND locationId = "' . $_POST['filter_location'] . '"';
+  }
+
+  // if only department has been changed
+  elseif(isset($_POST['filter_department'], $_POST['filter_location']) && $_POST['filter_department'] != '' && $_POST['filter_location'] == '') 
+  {
+    $query .= 'WHERE departmentId = "' . $_POST['filter_department'] . '"';
+  }
+  // if only location has been changed
+  elseif(isset($_POST['filter_department'], $_POST['filter_location']) && $_POST['filter_department'] == '' && $_POST['filter_location'] != '') 
+  {
+    $query .= 'WHERE locationId = "' . $_POST['filter_location'] . '"';
+  }
+
+
+
+  $query .= ' ORDER BY p.lastName, p.firstName, d.name, l.name';
 
 	$result = $conn->query($query);
 	

@@ -76,18 +76,21 @@
 
   <div class="filter-search d-flex justify-content-around">
     <div class="input-group container">
-      <label class="input-group-text" for="department-filter-select">Filter Department</label>
-      <select class="form-select department-select" id="department-filter-select" readonly>
-        <option selected default>All Departments</option>
+      <label class="input-group-text" for="filter_department">Filter Department</label>
+      <select class="form-select department-select" name="filter_department" id="filter_department">
+        <option value="" selected default>All Departments</option>
       </select>
     </div>
     <div class="filter-search container">
       <div class="input-group container">
-      <label class="input-group-text" for="location-filter-select">Filter Location</label>
-      <select class="form-select location-select" id="location-filter-select">
-        <option selected default>All Locations</option>
+      <label class="input-group-text" for="filter-location">Filter Location</label>
+      <select class="form-select location-select" name="filter_location" id="filter_location">
+        <option value="" selected default>All Locations</option>
       </select>
       </div>
+    </div>
+    <div class="form-group me-3">
+      <button type="button" name="filter" id="filter" class="btn btn-info">Filter</button>
     </div>
   </div>
 
@@ -103,7 +106,6 @@
         <th>Job Title</th>
         <th>Edit</th>
         <th>Delete</th>
-
       </tr>
     </thead>
   </table>

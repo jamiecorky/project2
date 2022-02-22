@@ -43,6 +43,31 @@ function updateDepartments() {
   });
 }
 
+function fill_datatable(filter_department = '', filter_location = '') {
+  dataTable = $('#user_table').DataTable({
+    "paging": true,
+    "responsive": true,
+    "fixedHeader": true,
+    "processing": true,
+    // "serverSide": true,
+    "order": [],
+    "ajax": {
+      url: "libs/php/getAll.php",
+      type: "POST",
+      data: {
+        filter_department: filter_department,
+        filter_location: filter_location,
+      }
+    },
+    "columnDefs": [
+      {
+        "targets": [0, 3, 7, 8],
+        "orderable": false,
+      },
+    ],
+  });
+}
+
 $(document).ready(function () {
   //Fix these
   $('#add-user-btn').click(function () {
@@ -53,28 +78,26 @@ $(document).ready(function () {
     $('#operation').val("Add");
   });
 
-  const dataTable = $('#user_table').DataTable({
-    "paging": true,
-    "responsive": true,
-    "fixedHeader": true,
-    "processing": true,
-    "serverSide": true,
-    "order": [],
-    "info": true,
-    "ajax": {
-      url: "libs/php/getAll.php",
-      type: "GET"
-    },
-    "columnDefs": [
-      {
-        "targets": [0, 3],
-        "orderable": false,
-      },
-    ],
-  });
-
+  fill_datatable();
   updateLocations();
   updateDepartments();
+
+  $('#filter').click(function () {
+    var filter_department = $('#filter_department').val();
+    var filter_location = $('#filter_location').val();
+    if (filter_department != '' || filter_location != '') {
+      $('#user_table').DataTable().destroy();
+      fill_datatable(filter_department, filter_location);
+    }
+    else {
+      $.alert({
+        title: 'Try Again!',
+        content: 'Select a department and/or location to filter the results first.',
+      });
+      $('#user_table').DataTable().destroy();
+      fill_datatable();
+    }
+  });
 
   // Add User
   $(document).on('submit', '#user_form', function (event) {
