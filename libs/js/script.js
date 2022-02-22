@@ -388,8 +388,8 @@ $(document).ready(function () {
 
     const locId = $('#loc-select-edit').val();
     const locName = $('#loc-edit-name').val();
-    console.log(locId)
-    console.log(locName)
+    // console.log(locId)
+    // console.log(locName)
 
     // Makes sure that the fields below are filled out before submitting
     if (locName == '' && locId == null) {
@@ -404,7 +404,7 @@ $(document).ready(function () {
       });
     } else {
       $.confirm({
-        title: 'Update Department!',
+        title: 'Update Location!',
         content: `Are you sure you want to update this location?<br>This action will update the location of all ${$('#loc-select-edit option:selected').text()} departments!`,
         buttons: {
           confirm: {
@@ -449,7 +449,7 @@ $(document).ready(function () {
       method: "POST",
       data: { id: locationId },
       success: function (result) {
-        console.log(result.data)
+        // console.log(result.data)
         if (result.data != "0") {
           $.alert({
             title: 'Unable To Delete!',

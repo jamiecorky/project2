@@ -24,7 +24,11 @@ hr {
 	border-top: 1px dashed #000000;
 }
 
-.b-example-divider {
+.filter-search {
+	display: flex;
+}
+
+.nav-divider {
 	height: 2.5rem;
 	background-color: rgba(0, 0, 0, 0.1);
 	margin-bottom: 10px;
