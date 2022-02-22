@@ -74,24 +74,20 @@
 
   <div class="nav-divider"></div>
 
-  <div class="filter-search container-fluid">
-    <div class="input-group mb-3 container">
-      <label class="input-group-text" for="inputGroupSelect01">Filter Department</label>
-      <select class="form-select" id="inputGroupSelect01">
-        <option selected>Choose...</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
+  <div class="filter-search d-flex justify-content-around">
+    <div class="input-group container">
+      <label class="input-group-text" for="department-filter-select">Filter Department</label>
+      <select class="form-select department-select" id="department-filter-select" readonly>
+        <option selected default>All Departments</option>
       </select>
     </div>
-    <div class="input-group mb-3 container">
-      <label class="input-group-text" for="inputGroupSelect01">Filter Location</label>
-      <select class="form-select" id="inputGroupSelect01">
-        <option selected>Choose...</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
+    <div class="filter-search container">
+      <div class="input-group container">
+      <label class="input-group-text" for="location-filter-select">Filter Location</label>
+      <select class="form-select location-select" id="location-filter-select">
+        <option selected default>All Locations</option>
       </select>
+      </div>
     </div>
   </div>
 

@@ -1,5 +1,10 @@
 // Functions
 
+// Stops form resubmit message on refresh caused by having select options on page even if they on default options
+if (window.history.replaceState) {
+  window.history.replaceState(null, null, window.location.href);
+}
+
 // Used to populate select options in Add/Edit department modal
 function updateLocations() {
   $.ajax({
@@ -53,6 +58,7 @@ $(document).ready(function () {
     "responsive": true,
     "fixedHeader": true,
     "processing": true,
+    "serverSide": true,
     "order": [],
     "info": true,
     "ajax": {
