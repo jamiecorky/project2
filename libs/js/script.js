@@ -13,7 +13,8 @@ function updateLocations() {
     dataType: 'json',
     success: function (result) {
       if (result.status.name == "ok") {
-        $('.location-select').append(`<option disabled selected value="">Locations</option>`);
+        $('#filter_location').append(`<option selected value="">Location</option>`);
+        $('.loc-sel-default').append(`<option disabled selected value="">Select Location</option>`);
         for (let i = 0; i < result.data.length; i++) {
           $('.location-select').append(`<option value="${result.data[i].id}">${result.data[i].name}</option>`);
         }
@@ -33,7 +34,8 @@ function updateDepartments() {
     dataType: 'json',
     success: function (result) {
       if (result.status.name == "ok") {
-        $('.department-select').append(`<option disabled selected value="">Departments</option>`);
+        $('#filter_department').append(`<option selected value="">Department</option>`);
+        $('.dep-sel-default').append(`<option disabled selected value="">Select Department</option>`);
         for (let i = 0; i < result.data.length; i++) {
           $('.department-select').append(`<option value="${result.data[i].id}">${result.data[i].name}</option>`);
         }
