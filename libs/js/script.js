@@ -13,6 +13,7 @@ function updateLocations() {
     dataType: 'json',
     success: function (result) {
       if (result.status.name == "ok") {
+        $('.location-select').append(`<option disabled selected value="">Locations</option>`);
         for (let i = 0; i < result.data.length; i++) {
           $('.location-select').append(`<option value="${result.data[i].id}">${result.data[i].name}</option>`);
         }
@@ -32,6 +33,7 @@ function updateDepartments() {
     dataType: 'json',
     success: function (result) {
       if (result.status.name == "ok") {
+        $('.department-select').append(`<option disabled selected value="">Departments</option>`);
         for (let i = 0; i < result.data.length; i++) {
           $('.department-select').append(`<option value="${result.data[i].id}">${result.data[i].name}</option>`);
         }
@@ -42,6 +44,25 @@ function updateDepartments() {
     }
   });
 }
+
+// function updateSearchDepartments() {
+//   $.ajax({
+//     url: "libs/php/getAllDepartments.php",
+//     type: 'GET',
+//     dataType: 'json',
+//     success: function (result) {
+//       if (result.status.name == "ok") {
+//         $('.department-select').append('<option value="" selected disabled>Select Department</option>');
+//         for (let i = 0; i < result.data.length; i++) {
+//           $('.department-select').append(`<option value="${result.data[i].id}">${result.data[i].name}</option>`);
+//         }
+//       }
+//     },
+//     error: function (jqXHR, textStatus, errorThrown) {
+//       console.log(jqXHR);
+//     }
+//   });
+// }
 
 function fill_datatable(filter_department = '', filter_location = '') {
   let dataTable = $('#user_table').DataTable({
@@ -69,15 +90,6 @@ function fill_datatable(filter_department = '', filter_location = '') {
 }
 
 $(document).ready(function () {
-  //Fix these
-  $('#add-user-btn').click(function () {
-    $('#user_form')[0].reset();
-    $('#dep_form')[0].reset();
-    $('#user-title').text("Add User Details");
-    $('#action').val("Add");
-    $('#operation').val("Add");
-  });
-
   fill_datatable();
   updateLocations();
   updateDepartments();
@@ -159,7 +171,8 @@ $(document).ready(function () {
         success: function (data) {
           $('#user_form')[0].reset();
           $('#userModal').modal('hide');
-          dataTable.ajax.reload();
+          $('#user_table').DataTable().destroy();
+          fill_datatable()
         }
       });
     }
@@ -201,7 +214,8 @@ $(document).ready(function () {
                 success: function (data) {
                   $('#user_edit_form')[0].reset();
                   $('#userEditModal').modal('hide');
-                  dataTable.ajax.reload();
+                  $('#user_table').DataTable().destroy();
+                  fill_datatable();
                 }
               });
             },
@@ -223,9 +237,6 @@ $(document).ready(function () {
   // Adds Department after filling form
   $(document).on('submit', '#dep_form', function (event) {
     event.preventDefault();
-    $(".department-select").empty();
-    $('#dep-action').val("Add");
-    $('#dep-operation').val("Add");
     $('#dep-title').text("Add Department Details");
     const depName = $('#dep-name').val();
     const locID = $('.loc-select').val();
@@ -242,7 +253,9 @@ $(document).ready(function () {
         success: function (data) {
           $('#dep_form')[0].reset();
           $('#depModal').modal('hide');
-          dataTable.ajax.reload();
+          $('#user_table').DataTable().destroy();
+          fill_datatable()
+          $(".department-select").empty();
           updateDepartments()
         }
       });
@@ -273,7 +286,8 @@ $(document).ready(function () {
         success: function (data) {
           $('#loc_form')[0].reset();
           $('#locModal').modal('hide');
-          dataTable.ajax.reload();
+          $('#user_table').DataTable().destroy();
+          fill_datatable();
           updateLocations();
         }
       });
@@ -319,7 +333,8 @@ $(document).ready(function () {
               method: "POST",
               data: { id: userId },
               success: function (data) {
-                dataTable.ajax.reload();
+                $('#user_table').DataTable().destroy();
+                fill_datatable()
               }
             });
             $.alert('Deleted!');
@@ -339,17 +354,12 @@ $(document).ready(function () {
     $('#dep-edit-name').val($('#dep-select-edit option:selected').text());
   })
 
-
   // Department Form Edit on Submit
   $(document).on('submit', '#dep_edit_form', function (event) {
     event.preventDefault();
-
     const depId = $('#dep-select-edit').val();
     const depName = $('#dep-edit-name').val();
     const locId = $('#loc-edit-select').val();
-    console.log(depId)
-    console.log(depName)
-    console.log(locId)
 
     // Makes sure that the fields below are filled out before submitting
     if (depName == '' && locId == null) {
@@ -383,8 +393,9 @@ $(document).ready(function () {
                   $('#dep_edit_form')[0].reset();
                   $('#depEditModal').modal('hide');
                   $(".department-select").empty();
+                  $('#user_table').DataTable().destroy();
+                  fill_datatable()
                   updateDepartments()
-                  dataTable.ajax.reload();
                   $.alert('Updated!');
                 }
               });
@@ -407,9 +418,11 @@ $(document).ready(function () {
     $.ajax({
       url: "libs/php/countUsersInDepartment.php",
       method: "POST",
+      dataType: "json",
       data: { id: departmentId },
       success: function (result) {
-        if (result.data != "0") {
+        console.log(result.data);
+        if (result.data != '0') {
           $.alert({
             title: 'Unable To Delete!',
             content: 'There are still users in this department, remove the users first or change their department.',
@@ -429,8 +442,9 @@ $(document).ready(function () {
                     success: function (data) {
                       $('#dep_del_form')[0].reset();
                       $('#depDeleteModal').modal('hide');
-                      dataTable.ajax.reload();
-                      $("#dep-sel").empty();
+                      $(".department-select").empty();
+                      $('#user_table').DataTable().destroy();
+                      fill_datatable()
                       updateDepartments();
                     }
                   });
@@ -452,11 +466,8 @@ $(document).ready(function () {
   // Location Form Edit on Submit
   $(document).on('submit', '#loc_edit_form', function (event) {
     event.preventDefault();
-
     const locId = $('#loc-select-edit').val();
     const locName = $('#loc-edit-name').val();
-    // console.log(locId)
-    // console.log(locName)
 
     // Makes sure that the fields below are filled out before submitting
     if (locName == '' && locId == null) {
@@ -489,8 +500,9 @@ $(document).ready(function () {
                   $('#loc_edit_form')[0].reset();
                   $('#locEditModal').modal('hide');
                   $(".location-select").empty();
+                  $('#user_table').DataTable().destroy();
+                  fill_datatable();
                   updateLocations()
-                  dataTable.ajax.reload();
                   $.alert('Updated!');
                 }
               });
@@ -514,6 +526,7 @@ $(document).ready(function () {
     $.ajax({
       url: "libs/php/countDepartmentsInLocation.php",
       method: "POST",
+      dataType: "json",
       data: { id: locationId },
       success: function (result) {
         // console.log(result.data)
@@ -537,8 +550,9 @@ $(document).ready(function () {
                     success: function (data) {
                       $('#loc_del_form')[0].reset();
                       $('#locDeleteModal').modal('hide');
-                      dataTable.ajax.reload();
-                      $("#loc-sel").empty();
+                      $('#user_table').DataTable().destroy();
+                      fill_datatable()
+                      $(".location-select").empty();
                       updateLocations();
                     }
                   });
