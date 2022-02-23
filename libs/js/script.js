@@ -44,7 +44,7 @@ function updateDepartments() {
 }
 
 function fill_datatable(filter_department = '', filter_location = '') {
-  dataTable = $('#user_table').DataTable({
+  let dataTable = $('#user_table').DataTable({
     "paging": true,
     "responsive": true,
     "fixedHeader": true,
@@ -100,6 +100,41 @@ $(document).ready(function () {
   $('#reset').click(function () {
     $('#user_table').DataTable().destroy();
     fill_datatable();
+  });
+
+  // Opens department dataTable in modal from nav dropdown
+  $('#view-dep').click(function () {
+    $('#dep_table').DataTable().destroy();
+
+    dataTable = $('#dep_table').DataTable({
+      "paging": false,
+      "responsive": false,
+      "fixedHeader": true,
+      "processing": false,
+      "searching": false,
+      "order": [],
+      "ajax": {
+        url: "libs/php/getAllDepartmentsForTable.php",
+        type: "GET",
+      }
+    })
+  });
+
+  // Opens location dataTable in modal from nav dropdown
+  $('#view-loc').click(function () {
+    $('#loc_table').DataTable().destroy();
+    dataTable = $('#loc_table').DataTable({
+      "paging": false,
+      "responsive": false,
+      "fixedHeader": true,
+      "processing": false,
+      "searching": false,
+      "order": [],
+      "ajax": {
+        url: "libs/php/getAllLocationsForTable.php",
+        type: "GET",
+      }
+    })
   });
 
   // Add User

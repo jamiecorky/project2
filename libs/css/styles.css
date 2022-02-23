@@ -1,5 +1,5 @@
 body {
-	overflow: hidden;
+	overflow-x: hidden;
 }
 
 #user_table,
@@ -38,6 +38,17 @@ div#user_table_length {
 	display: flex;
 }
 
+#filter,
+#reset,
+.input-group {
+	margin: 5px;
+}
+
+#btn-group {
+	display: flex;
+	max-width: fit-content;
+}
+
 .nav-divider {
 	height: 2.5rem;
 	background-color: rgba(0, 0, 0, 0.1);
@@ -56,12 +67,42 @@ div#user_table_length {
 	user-select: none;
 }
 
+.input-group {
+	padding-left: 0;
+	padding-right: 0;
+}
+
 #mail-btn {
 	float: right;
+}
+
+#filter-selects {
+	display: flex;
 }
 
 @media (min-width: 768px) {
 	.bd-placeholder-img-lg {
 		font-size: 3.5rem;
+	}
+}
+
+@media (max-width: 624px) {
+	#filter-selects {
+		margin: 0px;
+
+		justify-content: center;
+	}
+
+	.filter-search {
+		flex-direction: column;
+		justify-content: center;
+		align-content: space-between;
+		align-items: center;
+		padding: 0;
+	}
+
+	#btn-group {
+		display: flex;
+		justify-content: center;
 	}
 }
