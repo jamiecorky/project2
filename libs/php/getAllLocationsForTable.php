@@ -34,7 +34,7 @@
 
 	// SQL does not accept parameters and so is not prepared
 
-	$query = 'SELECT id, name as location FROM location';
+	$query = 'SELECT id, name as location FROM location ORDER BY name';
 
 	$result = $conn->query($query);
 	
@@ -59,9 +59,12 @@
 
     $sub_array = array();
 
-    $sub_array[] = $row["id"];
+    // $sub_array[] = $row["id"];
     $sub_array[] = $row["location"];
+    $sub_array[] = '<button type="button" name="update" id="'.$row["id"].'" class="btn btn-primary btn-sm fa-solid fa-pen-to-square update-location"></button>';
+    $sub_array[] = '<button type="button" name="delete" id="'.$row["id"].'" class="btn btn-danger btn-sm fa-solid fa-trash-can delete-location"></button>';
     $data[] = $sub_array;
+    
 
 	}
 	$output['status']['code'] = "200";

@@ -34,7 +34,7 @@
 
 	// SQL does not accept parameters and so is not prepared
 
-	$query = 'SELECT COUNT(*) FROM `department` WHERE `locationID` = ' . $_REQUEST['id'];
+	$query = 'SELECT COUNT(id) FROM `department` WHERE `locationID` = ' . $_REQUEST['id'];
 	$result = $conn->query($query);
 	
 	if (!$result) {

@@ -36,6 +36,17 @@
 
 	$query = 'SELECT d.id, d.name as department, l.name as location FROM department d LEFT JOIN location l ON (l.id = d.locationID)';
 
+  if(isset($_POST['filter_location']) && $_POST['filter_location'] != '') 
+  {
+    $query .= 'WHERE locationId = "' . $_POST['filter_location'] . '"';
+  }
+
+
+
+  $query .= ' ORDER BY d.name, l.name';
+
+
+
 	$result = $conn->query($query);
 	
 	if (!$result) {
@@ -59,9 +70,11 @@
 
     $sub_array = array();
 
-    $sub_array[] = $row["id"];
+    // $sub_array[] = $row["id"];
     $sub_array[] = $row["department"];
     $sub_array[] = $row["location"];
+    $sub_array[] = '<button type="button" name="update" id="'.$row["id"].'" class="btn btn-primary btn-sm fa-solid fa-pen-to-square update-department"></button>';
+    $sub_array[] = '<button type="button" name="delete" id="'.$row["id"].'" class="btn btn-danger btn-sm fa-solid fa-trash-can delete-department"></button>';
     $data[] = $sub_array;
 
 	}

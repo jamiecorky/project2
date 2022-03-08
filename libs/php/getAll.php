@@ -82,7 +82,7 @@
 
     $sub_array = array();
 
-    $sub_array[] = $row["id"];
+    // $sub_array[] = $row["id"];
     $sub_array[] = $row["lastName"];
     $sub_array[] = $row["firstName"];
     $sub_array[] = $row["email"] . '<a href="mailto:' . $row["email"] . '"><button type="button" id="mail-btn" class="btn btn-secondary btn-sm fa-regular fa-envelope"></button></a>';

@@ -33,7 +33,7 @@ if (mysqli_connect_errno()) {
 
 // SQL does not accept parameters and so is not prepared
 
-$query = 'SELECT COUNT(*) FROM `personnel` WHERE `departmentID` = ' . $_REQUEST['id'];
+$query = 'SELECT COUNT(id) FROM `personnel` WHERE `departmentID` = ' . $_REQUEST['id'];
 $result = $conn->query($query);
 
 if (!$result) {

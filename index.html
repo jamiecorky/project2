@@ -1,397 +1,504 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Company Directory</title>
-  <link rel="stylesheet" href="libs/css/bootstrap.min.css">
-  <link rel="stylesheet" href="libs/css/all.min.css">
-  <link rel="stylesheet" href="libs/css/font-awesome.min.css">
-  <link rel="stylesheet" href="libs/css/dataTables.bootstrap5.min.css">
-  <link rel="stylesheet" href="libs/css/styles.css">
-  <link rel="stylesheet" href="libs/css/responsive.bootstrap5.min.css">
-  <link rel="stylesheet" href="libs/css/jquery-confirm.min.css">
-  <link rel="stylesheet" href="libs/css/fixedHeader.bootstrap5.min.css">
-  <script src="libs/js/jquery-3.5.1.js"></script>
-  <script src="libs/js/bootstrap.bundle.min.js"></script>
-  <script src="libs/js/jquery.dataTables.min.js"></script>
-  <script src="libs/js/dataTables.bootstrap5.min.js"></script>
-  <script src="libs/js/dataTables.fixedHeader.min.js"></script>
-  <script src="libs/js/jquery-confirm.min.js"></script>
-  <script src="libs/js/dataTables.responsive.min.js"></script>
-</head>
-<body>
-  
-  <div class="container">
-    <header class="d-flex flex-wrap justify-content-center py-2 mb-4 border-bottom">
-      <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Company Directory</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a id="add-user-btn" data-bs-toggle="modal" data-bs-target="#userModal" class="nav-link" href="#">Add User</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">Department</a>
-                <ul class="dropdown-menu" aria-labelledby="Department dropdown">
-                  <li><a data-bs-toggle="modal" data-bs-target="#depViewModal" class="dropdown-item" id="view-dep" href="#">View Departments</a></li>
-                  <li><a data-bs-toggle="modal" data-bs-target="#depModal" class="dropdown-item" id="add-dep" href="#">Add Department</a></li>
-                  <li><a data-bs-toggle="modal" data-bs-target="#depEditModal" class="dropdown-item" id="edit-dep" href="#">Edit Department</a></li>
-                  <li><a data-bs-toggle="modal" data-bs-target="#depDeleteModal" class="dropdown-item" id="delete-dep" href="#">Delete Department</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-          <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
-            <ul class="navbar-nav">
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                  Location
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="Location dropdown">
-                  <li><a data-bs-toggle="modal" data-bs-target="#locViewModal" class="dropdown-item" id="view-loc" href="#">View Locations</a></li>
-                  <li><a data-bs-toggle="modal" data-bs-target="#locModal" class="dropdown-item" id="add-loc" href="#">Add Location</a></li>
-                  <li><a data-bs-toggle="modal" data-bs-target="#locEditModal" class="dropdown-item" id="edit-loc" href="#">Edit Location</a></li>
-                  <li><a data-bs-toggle="modal" data-bs-target="#locDeleteModal" class="dropdown-item" id="delete-loc" href="#">Delete Location</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
-  </div>
+		<link rel="apple-touch-icon" sizes="57x57" href="libs/images/apple-icon-57x57.png" />
+		<link rel="apple-touch-icon" sizes="60x60" href="libs/images/apple-icon-60x60.png" />
+		<link rel="apple-touch-icon" sizes="72x72" href="libs/images/apple-icon-72x72.png" />
+		<link rel="apple-touch-icon" sizes="76x76" href="libs/images/apple-icon-76x76.png" />
+		<link rel="apple-touch-icon" sizes="114x114" href="libs/images/apple-icon-114x114.png" />
+		<link rel="apple-touch-icon" sizes="120x120" href="libs/images/apple-icon-120x120.png" />
+		<link rel="apple-touch-icon" sizes="144x144" href="libs/images/apple-icon-144x144.png" />
+		<link rel="apple-touch-icon" sizes="152x152" href="libs/images/apple-icon-152x152.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="libs/images/apple-icon-180x180.png" />
+		<link rel="icon" type="image/png" sizes="192x192" href="libs/images/android-icon-192x192.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="libs/images/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="96x96" href="libs/images/favicon-96x96.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="libs/images/favicon-16x16.png" />
+		<link rel="manifest" href="libs/images/manifest.json" />
+		<meta name="msapplication-TileColor" content="#ffffff" />
+		<meta name="msapplication-TileImage" content="libs/images/ms-icon-144x144.png" />
+		<meta name="theme-color" content="#ffffff" />
 
-  <div class="nav-divider"></div>
+		<title>Company Directory</title>
+		<link rel="stylesheet" href="libs/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="libs/css/all.min.css" />
+		<link rel="stylesheet" href="libs/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="libs/css/dataTables.bootstrap5.min.css" />
+		<link rel="stylesheet" href="libs/css/styles.css" />
+		<link rel="stylesheet" href="libs/css/responsive.bootstrap5.min.css" />
+		<link rel="stylesheet" href="libs/css/jquery-confirm.min.css" />
+		<link rel="stylesheet" href="libs/css/fixedHeader.bootstrap5.min.css" />
+		<script src="libs/js/jquery-3.5.1.js"></script>
+		<script src="libs/js/bootstrap.bundle.min.js"></script>
+		<script src="libs/js/jquery.dataTables.min.js"></script>
+		<script src="libs/js/dataTables.bootstrap5.min.js"></script>
+		<script src="libs/js/dataTables.fixedHeader.min.js"></script>
+		<script src="libs/js/jquery-confirm.min.js"></script>
+		<script src="libs/js/dataTables.responsive.min.js"></script>
+	</head>
+	<body>
+		<div id="preloader"></div>
 
-  <div class="filter-search d-flex">
-    <div class="container" id="filter-selects">
-      <div class="input-group container">
-        <label class="input-group-text" for="filter_department">Filter</label>
-        <select class="form-select department-select" name="filter_department" id="filter_department">
+		<div class="container">
+			<header class="d-flex py-2 mb-4 border-bottom">
+				<nav class="navbar d-flex navbar-expand-lg navbar-light">
+					<div class="container-fluid">
+						<a class="navbar-brand" href="#">Company Directory</a>
+						<!-- <button
+							class="navbar-toggler"
+							type="button"
+							data-bs-toggle="collapse"
+							data-bs-target="#navbarNavDarkDropdown"
+							aria-controls="navbarNavDarkDropdown"
+							aria-expanded="false"
+							aria-label="Toggle navigation"
+						>
+							<span class="navbar-toggler-icon"></span>
+						</button>
+						<div class="collapse navbar-collapse" id="navbarNavDarkDropdown"> -->
 
-        </select>
-      </div>
-      <div class="input-group container">
-        <label class="input-group-text" for="filter-location">Filter</label>
-        <select class="form-select location-select" name="filter_location" id="filter_location">
+						<!-- </div> -->
+					</div>
+				</nav>
+				<div class="container" id="button-container">
+					<a
+						id="add-user-btn"
+						data-bs-toggle="modal"
+						data-bs-target="#userModal"
+						class="btn btn-primary add-btns"
+						href="#"
+						>Add User</a
+					>
+				</div>
+			</header>
+		</div>
 
-        </select>
-      </div>
-    </div> 
-    <div id="btn-group" class="container">
-      <div class="form-group">
-        <button type="button" name="filter" id="filter" class="btn btn-info">Filter</button>
-      </div>
-      <div class="form-group">
-        <button type="button" name="reset" id="reset" class="btn btn-secondary">Reset</button>
-      </div>
-    </div>
-  </div>
+		<div class="nav-divider"></div>
 
-  <table id="user_table" class="display table table-striped table-hover" style="width:100%">
-    <thead>
-      <tr id="dt-head">
-        <th>ID</th>
-        <th>Last Name</th>
-        <th>First Name</th>
-        <th>Email</th>
-        <th>Department</th>
-        <th>Location</th>
-        <th>Job Title</th>
-        <th>Edit</th>
-        <th>Delete</th>
-      </tr>
-    </thead>
-  </table>
-  </div>
-  
-  <!-- Modal for adding -->
-  <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModal" aria-hidden="true">
-    <div class="modal-dialog">
-      <form method="post" id="user_form" enctype="multipart/form-data">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="user-title">Add User</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <label>Enter First Name *</label>
-            <input type="text" name="firstName" id="firstname" class="form-control"><br>
-            <label>Enter Last Name *</label>
-            <input type="text" name="lastName" id="lastname" class="form-control"><br>
-            <label>Enter Job Title </label>
-            <input type="text" name="jobTitle" id="jobtitle" class="form-control"><br>
-            <label>Enter Email *</label>
-            <input type="text" name="email" id="email" class="form-control"><br>
-            <label>Select Department *</label>
-            <select class="form-select department-select dep-sel-default" name="department" aria-label="form select">
+		<div class="nav nav-tabs" id="nav-tab" role="tablist">
+			<button
+				class="nav-link active"
+				id="view-per"
+				data-bs-toggle="tab"
+				data-bs-target="#personnel-table"
+				type="button"
+				role="tab"
+				aria-controls="nav-home"
+				aria-selected="true"
+			>
+				Personnel
+			</button>
+			<button
+				class="nav-link"
+				id="view-dep"
+				data-bs-toggle="tab"
+				data-bs-target="#department-table"
+				type="button"
+				role="tab"
+				aria-controls="nav-profile"
+				aria-selected="false"
+			>
+				Department
+			</button>
+			<button
+				class="nav-link"
+				id="view-loc"
+				data-bs-toggle="tab"
+				data-bs-target="#location-table"
+				type="button"
+				role="tab"
+				aria-controls="nav-contact"
+				aria-selected="false"
+			>
+				Location
+			</button>
+		</div>
+		<div class="filter-search d-flex">
+			<div class="container" id="filter-selects">
+				<div class="input-group container">
+					<label class="input-group-text" for="filter_department">Filter</label>
+					<select
+						class="form-select department-select-fil-per"
+						name="filter_department"
+						id="filter_department"
+					></select>
+				</div>
+				<div class="input-group container">
+					<label class="input-group-text" for="filter-location">Filter</label>
+					<select
+						class="form-select location-select-fil-per"
+						name="filter_location"
+						id="filter_location"
+					></select>
+				</div>
+			</div>
+			<div id="btn-group" class="container">
+				<div class="form-group">
+					<button type="button" name="filter" id="filter" class="btn btn-info">Filter</button>
+				</div>
+				<div class="form-group">
+					<button type="button" name="reset" id="reset" class="btn btn-secondary">Reset</button>
+				</div>
+			</div>
+		</div>
 
-            </select><br>
-          </div>
-          <div class="modal-footer">
-            <input type="hidden" name="user-id" id="user-id">
-            <input type="submit" name="action" id="action" class="btn btn-primary" value="Add">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
+		<div class="tab-content" id="nav-tabContent">
+			<div
+				class="tab-pane fade show active"
+				id="personnel-table"
+				role="tabpanel"
+				aria-labelledby="nav-home-tab"
+			>
+				<table id="user_table" class="display table table-striped table-hover" style="width: 100%">
+					<thead>
+						<tr id="dt-head">
+							<th>Last Name</th>
+							<th>First Name</th>
+							<th>Email</th>
+							<th>Department</th>
+							<th>Location</th>
+							<th>Job Title</th>
+							<th>Edit</th>
+							<th>Delete</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div class="tab-pane fade" id="department-table" role="tabpanel" aria-labelledby="nav-profile-tab">
+				<table id="dep_table" class="display table table-striped table-hover" style="width: 100%">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Location</th>
+							<th>Edit</th>
+							<th>Delete</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div class="tab-pane fade" id="location-table" role="tabpanel" aria-labelledby="nav-contact-tab">
+				<table id="loc_table" class="display table table-striped table-hover" style="width: 100%">
+					<thead>
+						<tr>
+							<th>Location</th>
+							<th>Edit</th>
+							<th>Delete</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
 
-  <!-- Modal for editing users -->
-  <div class="modal fade" id="userEditModal" tabindex="-1" aria-labelledby="userEditModal" aria-hidden="true">
-    <div class="modal-dialog">
-      <form method="post" id="user_edit_form" enctype="multipart/form-data">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="user-edit-title">Update User</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <label>Enter First Name *</label>
-            <input type="text" name="firstName" id="firstname-edit" class="form-control"><br>
-            <label>Enter Last Name *</label>
-            <input type="text" name="lastName" id="lastname-edit" class="form-control"><br>
-            <label>Enter Job Title </label>
-            <input type="text" name="jobTitle" id="jobtitle-edit" class="form-control"><br>
-            <label>Enter Email *</label>
-            <input type="text" name="email" id="email-edit" class="form-control"><br>
-            <label>Select Department *</label>
-            <select class="form-select department-select dep-sel-default" name="department" aria-label="form select">
+		<!-- Modal for adding users -->
+		<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModal" aria-hidden="true">
+			<div class="modal-dialog">
+				<form
+					method="post"
+					id="user_form"
+					class="requires-validation"
+					novalidate
+					enctype="multipart/form-data"
+				>
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="user-title">Add User</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="form-floating mb-3">
+								<input type="text" name="firstName" id="firstname" class="form-control" required />
+								<label for="firstName">First Name</label>
+								<div class="valid-feedback">First Name is valid!</div>
+								<div class="invalid-feedback">First Name is required!</div>
+							</div>
+							<div class="form-floating mb-3">
+								<input type="text" name="lastName" id="lastname" class="form-control" required />
+								<label for="lastName">Last Name</label>
+								<div class="valid-feedback">Last Name is valid!</div>
+								<div class="invalid-feedback">Last Name is required!</div>
+							</div>
+							<div class="form-floating mb-3">
+								<input type="text" name="jobTitle" id="jobtitle" class="form-control" required />
+								<label for="jobTitle">Job Title</label>
+								<div class="valid-feedback">Job Title is valid!</div>
+								<div class="invalid-feedback">Job Title is required!</div>
+							</div>
+							<div class="form-floating mb-3">
+								<input type="email" name="email" id="email" class="form-control" required />
+								<label for="email">Email</label>
+								<div class="valid-feedback">Email is valid!</div>
+								<div class="invalid-feedback">Valid Email is required!</div>
+							</div>
+							<div class="form-floating mb-3">
+								<select
+									class="form-select department-select-add dep-sel-default"
+									name="department"
+									aria-label="form select"
+									required
+								></select>
+								<label for="department">Department</label>
+								<div class="valid-feedback">Department is valid!</div>
+								<div class="invalid-feedback">A valid department is required!</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<input type="hidden" name="user-id" id="user-id" />
+							<input type="submit" name="action" id="action" class="btn btn-primary" value="Save" />
+							<button type="button" class="btn btn-secondary" id="cancel-add-user" data-bs-dismiss="modal">
+								Cancel
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 
-            </select><br>
-          </div>
-          <div class="modal-footer">
-            <input type="hidden" name="user-edit-id" id="user-edit-id">
-            <input type="submit" name="action" id="action" class="btn btn-danger" value="Update">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div> 
-  
-  <!-- Modal for viewing departments -->
-  <div class="modal fade" id="depViewModal" tabindex="-1" aria-labelledby="depViewModal" aria-hidden="true">
-    <div class="modal-dialog">
-      
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="dep-view-title">View Departments</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <table id="dep_table" class="display table table-striped table-hover" style="width:100%">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Location</th>
-                </tr>
-              </thead>
-            </table>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
-    </div>
-  </div>
+		<!-- Modal for editing users -->
+		<div
+			class="modal fade"
+			id="userEditModal"
+			tabindex="-1"
+			aria-labelledby="userEditModal"
+			aria-hidden="true"
+		>
+			<div class="modal-dialog">
+				<form
+					method="post"
+					id="user_edit_form"
+					class="requires-validation"
+					novalidate
+					enctype="multipart/form-data"
+				>
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="user-edit-title">Update User</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="form-floating mb-3">
+								<input type="text" name="firstName" id="firstname-edit" class="form-control" required />
+								<label for="firstName">First Name</label>
+								<div class="valid-feedback">First Name is valid!</div>
+								<div class="invalid-feedback">First Name is required!</div>
+							</div>
+							<div class="form-floating mb-3">
+								<input type="text" name="lastName" id="lastname-edit" class="form-control" required />
+								<label for="lastName">Last Name</label>
+								<div class="valid-feedback">Last Name is valid!</div>
+								<div class="invalid-feedback">Last Name is required!</div>
+							</div>
+							<div class="form-floating mb-3">
+								<input type="text" name="jobTitle" id="jobtitle-edit" class="form-control" required />
+								<label for="jobTitle">Job Title</label>
+								<div class="valid-feedback">Job Title is valid!</div>
+								<div class="invalid-feedback">Job Title is required!</div>
+							</div>
+							<div class="form-floating mb-3">
+								<input type="email" name="email" id="email-edit" class="form-control" required />
+								<label for="email">Email</label>
+								<div class="valid-feedback">Email is valid!</div>
+								<div class="invalid-feedback">Valid Email is required!</div>
+							</div>
+							<div class="form-floating mb-3">
+								<select
+									class="form-select department-select dep-sel-default"
+									name="department"
+									aria-label="form select"
+									required
+								></select>
+								<label for="department">Department</label>
+								<div class="valid-feedback">Department is valid!</div>
+								<div class="invalid-feedback">A valid department is required!</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<input type="hidden" name="user-edit-id" id="user-edit-id" />
+							<input type="submit" name="action" id="action" class="btn btn-danger" value="Save" />
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 
-  <!-- Modal for adding departments -->
-  <div class="modal fade" id="depModal" tabindex="-1" aria-labelledby="depModal" aria-hidden="true">
-    <div class="modal-dialog">
-      <form method="post" id="dep_form" enctype="multipart/form-data">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="dep-title">Add Department Details</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <label>Enter Department Name *</label>
-            <input type="text" name="dep-name" id="dep-name" class="form-control"><br>
-            <label>Select Location *</label>
-            <select class="form-select location-select loc-sel-default" name="loc-select" id="loc-select" aria-label="form select">
+		<!-- Modal for adding departments -->
+		<div class="modal fade" id="depModal" tabindex="-1" aria-labelledby="depModal" aria-hidden="true">
+			<div class="modal-dialog">
+				<form
+					method="post"
+					id="dep_form"
+					enctype="multipart/form-data"
+					class="requires-validation"
+					novalidate
+				>
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="dep-title">Add Department</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="form-floating mb3">
+								<input type="text" name="dep-name" id="dep-name" class="form-control" required />
+								<label for="dep-name">Department Name</label>
+								<div class="valid-feedback">Department Name is valid!</div>
+								<div class="invalid-feedback">Department Name is required!</div>
+							</div>
+							<br />
+							<div class="form-floating mb3">
+								<select
+									class="form-select location-select-add loc-sel-default"
+									name="loc-select"
+									id="loc-select"
+									aria-label="form select"
+									required
+								></select>
+								<label for="loc-select">Location</label>
+								<div class="valid-feedback">Location is valid!</div>
+								<div class="invalid-feedback">Location is required!</div>
+							</div>
+							<br />
+						</div>
+						<div class="modal-footer">
+							<input type="hidden" name="dep-id" id="dep-id" />
+							<input type="submit" name="action" id="dep-action" class="btn btn-primary" value="Save" />
+							<button
+								type="button"
+								class="btn btn-secondary"
+								id="cancel-add-department"
+								data-bs-dismiss="modal"
+							>
+								Cancel
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 
-            </select><br>
-          </div>
-          <div class="modal-footer">
-            <input type="hidden" name="dep-id" id="dep-id">
-            <input type="submit" name="action" id="dep-action" class="btn btn-primary" value="Add">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
+		<!-- Modal for updating departments -->
+		<div class="modal fade" id="depEditModal" tabindex="-1" aria-labelledby="depEditModal" aria-hidden="true">
+			<div class="modal-dialog">
+				<form
+					method="post"
+					id="dep_edit_form"
+					class="requires-validation"
+					novalidate
+					enctype="multipart/form-data"
+				>
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="dep-edit-title">Update Department</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="form-floating mb-3">
+								<input type="text" name="dep-edit-name" id="dep-edit-name" class="form-control" required />
+								<label for="dep-edit-name">Department Name</label>
+								<div class="valid-feedback">Department Name is valid!</div>
+								<div class="invalid-feedback">Department Name is required!</div>
+							</div>
+							<div class="form-floating mb-3">
+								<select
+									class="form-select location-select loc-sel-default"
+									name="loc-edit-select"
+									id="loc-edit-select"
+									aria-label="form select"
+									required
+								></select>
+								<label for="loc-edit-select">Location</label>
+								<div class="valid-feedback">Location is valid!</div>
+								<div class="invalid-feedback">Location is required!</div>
+							</div>
+							<br />
+						</div>
 
-  <!-- Modal for updating departments -->
-  <div class="modal fade" id="depEditModal" tabindex="-1" aria-labelledby="depEditModal" aria-hidden="true">
-    <div class="modal-dialog">
-      <form method="post" id="dep_edit_form" enctype="multipart/form-data">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="dep-edit-title">Edit Department Details</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <label>Select Department To Update *</label>
-            <select class="form-select department-select dep-sel-default" name="department" id="dep-select-edit" aria-label="form select">
+						<div class="modal-footer">
+							<input type="hidden" name="dep-id" id="dep-id" />
+							<input type="submit" name="action" id="dep-action" class="btn btn-danger" value="Save" />
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 
-            </select><hr>
-            <label>Update Department Name *</label>
-            <input type="text" name="dep-edit-name" id="dep-edit-name" class="form-control"><br>
-            <label>Update Location *</label>
-            <select class="form-select location-select loc-sel-default" name="loc-edit-select" id="loc-edit-select" aria-label="form select">
+		<!-- Modal for adding locations -->
+		<div class="modal fade" id="locModal" tabindex="-1" aria-labelledby="locModal" aria-hidden="true">
+			<div class="modal-dialog">
+				<form
+					method="post"
+					id="loc_form"
+					class="requires-validation"
+					novalidate
+					enctype="multipart/form-data"
+				>
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="loc-title">Add Location</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="form-floating mb-3">
+								<input type="text" name="loc-name" id="loc-name" class="form-control" required />
+								<label for="loc-name">Location Name</label>
+								<div class="valid-feedback">Location is valid!</div>
+								<div class="invalid-feedback">Location is required!</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<input type="hidden" name="loc-id" id="loc-id" />
+							<input type="hidden" name="loc-operation" id="loc-operation" />
+							<input type="submit" name="action" id="loc-action" class="btn btn-primary" value="Save" />
+							<button
+								type="button"
+								class="btn btn-secondary"
+								id="cancel-add-location"
+								data-bs-dismiss="modal"
+							>
+								Cancel
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 
-            </select><br>
-          </div>
-          <div class="modal-footer">
-            <input type="hidden" name="dep-id" id="dep-id">
-            <input type="submit" name="action" id="dep-action" class="btn btn-danger" value="Save">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
+		<!-- Modal for updating locations -->
+		<div class="modal fade" id="locEditModal" tabindex="-1" aria-labelledby="locEditModal" aria-hidden="true">
+			<div class="modal-dialog">
+				<form
+					method="post"
+					id="loc_edit_form"
+					class="requires-validation"
+					novalidate
+					enctype="multipart/form-data"
+				>
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="loc-edit-title">Update Location</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="form-floating mb-3">
+								<input type="text" name="loc-edit-name" id="loc-edit-name" class="form-control" required />
+								<label for="loc-edit-name">Location Name</label>
+								<div class="valid-feedback">Location is valid!</div>
+								<div class="invalid-feedback">Location is required!</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<input type="hidden" name="loc-id" id="loc-id" />
+							<input type="submit" name="action" id="loc-action" class="btn btn-danger" value="Save" />
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 
-  <!-- Modal for deleting departments -->
-  <div class="modal fade" id="depDeleteModal" tabindex="-1" aria-labelledby="depModal" aria-hidden="true">
-    <div class="modal-dialog">
-      <form method="post" id="dep_del_form" enctype="multipart/form-data">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="dep-title">Delete Department</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <label>Select Department *</label>
-            <select class="form-select department-select dep-sel-default" id="dep-sel" name="department" aria-label="form select">
-
-            </select><br>
-          </div>
-          <div class="modal-footer">
-            <input type="hidden" name="dep-id" id="dep-id">
-            <input type="submit" name="action" id="dep-del-btn" class="btn btn-danger" value="Delete">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal for viewing locations -->
-  <div class="modal fade" id="locViewModal" tabindex="-1" aria-labelledby="locViewModal" aria-hidden="true">
-    <div class="modal-dialog">
-      
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="loc-view-title">View Locations</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <table id="loc_table" class="display table table-striped table-hover" style="width:100%">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Location</th>
-                </tr>
-              </thead>
-            </table>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
-    </div>
-  </div>
-
-  <!-- Modal for adding locations -->
-  <div class="modal fade" id="locModal" tabindex="-1" aria-labelledby="locModal" aria-hidden="true">
-    <div class="modal-dialog">
-      <form method="post" id="loc_form" enctype="multipart/form-data">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="loc-title">Add Location</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <label>Enter Location Name *</label>
-            <input type="text" name="loc-name" id="loc-name" class="form-control"><br>    
-          </div>
-          <div class="modal-footer">
-            <input type="hidden" name="loc-id" id="loc-id">
-            <input type="hidden" name="loc-operation" id="loc-operation">
-            <input type="submit" name="action" id="loc-action" class="btn btn-primary" value="Add">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal for updating locations -->
-  <div class="modal fade" id="locEditModal" tabindex="-1" aria-labelledby="locEditModal" aria-hidden="true">
-    <div class="modal-dialog">
-      <form method="post" id="loc_edit_form" enctype="multipart/form-data">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="loc-edit-title">Edit Location Name</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <label>Select Location To Update *</label>
-            <select class="form-select location-select loc-sel-default" name="location" id="loc-select-edit" aria-label="form select">
-
-            </select><hr>
-            <label>Update Location Name *</label>
-            <input type="text" name="loc-edit-name" id="loc-edit-name" class="form-control"><br>
-          </div>
-          <div class="modal-footer">
-            <input type="hidden" name="loc-id" id="loc-id">
-            <input type="hidden" name="loc-operation" id="loc-edit-operation" value="Edit">
-            <input type="submit" name="action" id="loc-action" class="btn btn-danger" value="Save">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal for deleting locations -->
-  <div class="modal fade" id="locDeleteModal" tabindex="-1" aria-labelledby="locModal" aria-hidden="true">
-    <div class="modal-dialog">
-      <form method="post" id="loc_del_form" enctype="multipart/form-data">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="loc-del-title">Delete Location</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <label>Select Location *</label>
-            <select class="form-select location-select loc-sel-default" id="loc-sel" name="Location" aria-label="form select">
-
-            </select><br>
-          </div>
-          <div class="modal-footer">
-            <input type="hidden" name="loc-id" id="loc-id">
-            <input type="hidden" name="loc-operation" id="loc-operation">
-            <input type="submit" name="action" id="loc-del-btn" class="btn btn-danger" value="Delete">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <script src="libs/js/script.js"></script>
-</body>
+		<script src="libs/js/script.js"></script>
+	</body>
 </html>
-
