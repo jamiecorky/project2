@@ -47,9 +47,6 @@ function updateLocations() {
         }
       }
     },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.log(jqXHR);
-    }
   });
 }
 
@@ -58,7 +55,6 @@ function emptyLocations() {
   $(".location-select-fil-per").empty();
   $(".location-select-fil-dep").empty();
   $(".location-select-add").empty();
-
 }
 
 // Used to populate select options in Add/Edit personnel modal
@@ -78,9 +74,6 @@ function updateDepartments() {
         }
       }
     },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.log(jqXHR);
-    }
   });
 }
 
@@ -470,7 +463,6 @@ $(document).ready(function () {
       data: { id: departmentId },
       dataType: "json",
       success: function (depData) {
-        console.log(depData)
         const result = depData.data[0];
         $('#depEditModal').modal('show');
         $('#dep-edit-name').val(result.name);
@@ -559,7 +551,6 @@ $(document).ready(function () {
             data: { id: departmentId },
             dataType: "json",
             success: function (depData) {
-              console.log(depData)
               const result = depData.data[0];
               const dName = result.name;
               $.confirm({
@@ -608,7 +599,6 @@ $(document).ready(function () {
       data: { id: locationId },
       dataType: "json",
       success: function (locData) {
-        console.log(locData)
         const result = locData.data[0];
         $('#locEditModal').modal('show');
         $('#loc-edit-name').val(result.name);
