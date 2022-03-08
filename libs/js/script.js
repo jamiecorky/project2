@@ -1,4 +1,28 @@
 // Functions
+$(window).on('load', function () {
+  if ($('#preloader').length) {
+    $('#preloader').delay(1000).fadeOut('slow', function () {
+      $(this).remove();
+    });
+  }
+});
+
+(function () {
+  'use strict'
+  const forms = document.querySelectorAll('.requires-validation')
+  Array.from(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+
 
 // Stops form resubmit message on refresh caused by having select options on page even if they on default options
 if (window.history.replaceState) {
@@ -14,9 +38,12 @@ function updateLocations() {
     success: function (result) {
       if (result.status.name == "ok") {
         $('#filter_location').append(`<option selected value="">Location</option>`);
-        $('.loc-sel-default').append(`<option disabled selected value="">Select Location</option>`);
+        // $('.loc-sel-default').append(`<option disabled selected value="">Select Location</option>`);
         for (let i = 0; i < result.data.length; i++) {
           $('.location-select').append(`<option value="${result.data[i].id}">${result.data[i].name}</option>`);
+          $('.location-select-fil-per').append(`<option value="${result.data[i].id}">${result.data[i].name}</option>`);
+          $('.location-select-fil-dep').append(`<option value="${result.data[i].id}">${result.data[i].name}</option>`);
+          $('.location-select-add').append(`<option value="${result.data[i].id}">${result.data[i].name}</option>`);
         }
       }
     },
@@ -24,6 +51,14 @@ function updateLocations() {
       console.log(jqXHR);
     }
   });
+}
+
+function emptyLocations() {
+  $(".location-select").empty();
+  $(".location-select-fil-per").empty();
+  $(".location-select-fil-dep").empty();
+  $(".location-select-add").empty();
+
 }
 
 // Used to populate select options in Add/Edit personnel modal
@@ -35,9 +70,11 @@ function updateDepartments() {
     success: function (result) {
       if (result.status.name == "ok") {
         $('#filter_department').append(`<option selected value="">Department</option>`);
-        $('.dep-sel-default').append(`<option disabled selected value="">Select Department</option>`);
+        // $('.dep-sel-default').append(`<option disabled selected value="">Select Department</option>`);
         for (let i = 0; i < result.data.length; i++) {
           $('.department-select').append(`<option value="${result.data[i].id}">${result.data[i].name}</option>`);
+          $('.department-select-fil-per').append(`<option value="${result.data[i].id}">${result.data[i].name}</option>`);
+          $('.department-select-add').append(`<option value="${result.data[i].id}">${result.data[i].name}</option>`);
         }
       }
     },
@@ -47,32 +84,18 @@ function updateDepartments() {
   });
 }
 
-// function updateSearchDepartments() {
-//   $.ajax({
-//     url: "libs/php/getAllDepartments.php",
-//     type: 'GET',
-//     dataType: 'json',
-//     success: function (result) {
-//       if (result.status.name == "ok") {
-//         $('.department-select').append('<option value="" selected disabled>Select Department</option>');
-//         for (let i = 0; i < result.data.length; i++) {
-//           $('.department-select').append(`<option value="${result.data[i].id}">${result.data[i].name}</option>`);
-//         }
-//       }
-//     },
-//     error: function (jqXHR, textStatus, errorThrown) {
-//       console.log(jqXHR);
-//     }
-//   });
-// }
+function emptyDepartments() {
+  $(".department-select").empty();
+  $(".department-select-fil-per").empty();
+  $(".department-select-add").empty();
+}
 
-function fill_datatable(filter_department = '', filter_location = '') {
+function fill_user_table(filter_department = '', filter_location = '') {
   let dataTable = $('#user_table').DataTable({
-    "paging": true,
+    "paging": false,
     "responsive": true,
     "fixedHeader": true,
-    "processing": true,
-    // "serverSide": true,
+    "processing": false,
     "order": [],
     "ajax": {
       url: "libs/php/getAll.php",
@@ -84,15 +107,48 @@ function fill_datatable(filter_department = '', filter_location = '') {
     },
     "columnDefs": [
       {
-        "targets": [0, 3, 7, 8],
+        "targets": [2, 6, 7],
         "orderable": false,
       },
     ],
   });
 }
 
+function fill_dep_table(filter_location_dep = '') {
+  dataTable = $('#dep_table').DataTable({
+    "paging": false,
+    "responsive": true,
+    "fixedHeader": true,
+    "processing": false,
+    "searching": false,
+    "order": [],
+    "ajax": {
+      url: "libs/php/getAllDepartmentsForTable.php",
+      type: "POST",
+      data: {
+        filter_location: filter_location_dep,
+      },
+    }
+  })
+}
+
+function fill_loc_table() {
+  dataTable = $('#loc_table').DataTable({
+    "paging": false,
+    "responsive": true,
+    "fixedHeader": true,
+    "processing": false,
+    "searching": false,
+    "order": [],
+    "ajax": {
+      url: "libs/php/getAllLocationsForTable.php",
+      type: "GET",
+    }
+  })
+}
+
 $(document).ready(function () {
-  fill_datatable();
+  fill_user_table();
   updateLocations();
   updateDepartments();
 
@@ -101,7 +157,7 @@ $(document).ready(function () {
     var filter_location = $('#filter_location').val();
     if (filter_department != '' || filter_location != '') {
       $('#user_table').DataTable().destroy();
-      fill_datatable(filter_department, filter_location);
+      fill_user_table(filter_department, filter_location);
     }
     else {
       $.alert({
@@ -111,44 +167,58 @@ $(document).ready(function () {
     }
   });
 
+  $('.btn-info').click(function () {
+    var filter_location_dep = $('#filter_location_dep').val();
+    if (filter_location_dep != '') {
+      $('#dep_table').DataTable().destroy();
+      fill_dep_table(filter_location_dep);
+    }
+  });
+
   $('#reset').click(function () {
     $('#user_table').DataTable().destroy();
-    fill_datatable();
+    fill_user_table();
+    $('#dep_table').DataTable().destroy();
+    fill_dep_table();
+  });
+
+  // When you click the personnel tab it updates the button and table
+  $('#view-per').click(function () {
+    $('.filter-search').show();
+    $('.filter-search').find('*').show();
+    $('.location-select-fil-per').attr('id', 'filter_location');
+    $('#filterDep').attr('id', 'filter');
+    $('.add-btns').attr('data-bs-target', '#userModal');
+    $('.add-btns').html('Add User');
+    $('.add-btns').attr('id', 'add-user-btn');
+    $('#user_table').DataTable().destroy();
+    fill_user_table();
   });
 
   // Opens department dataTable in modal from nav dropdown
   $('#view-dep').click(function () {
+    $('#filter').attr('id', 'filterDep');
+    $('.filter-search').find('*').show();
+    $('.filter-search').show();
+    $('.location-select-fil-per').attr('id', 'filter_location_dep');
+    $('.department-select-fil-per').parent().hide();
+    $('.add-btns').attr('data-bs-target', '#depModal');
+    $('.add-btns').html('Add Department');
+    $('.add-btns').attr('id', 'add-dep');
     $('#dep_table').DataTable().destroy();
-
-    dataTable = $('#dep_table').DataTable({
-      "paging": false,
-      "responsive": false,
-      "fixedHeader": true,
-      "processing": false,
-      "searching": false,
-      "order": [],
-      "ajax": {
-        url: "libs/php/getAllDepartmentsForTable.php",
-        type: "GET",
-      }
-    })
+    fill_dep_table();
   });
 
   // Opens location dataTable in modal from nav dropdown
   $('#view-loc').click(function () {
+    $('.filter-search').children().hide();
+    $('.filter-search').hide();
     $('#loc_table').DataTable().destroy();
-    dataTable = $('#loc_table').DataTable({
-      "paging": false,
-      "responsive": false,
-      "fixedHeader": true,
-      "processing": false,
-      "searching": false,
-      "order": [],
-      "ajax": {
-        url: "libs/php/getAllLocationsForTable.php",
-        type: "GET",
-      }
-    })
+    fill_loc_table();
+    $('.add-btns').attr('data-bs-target', '#locModal');
+    $('.add-btns').html('Add Location');
+    $('.add-btns').attr('id', 'add-loc');
+
   });
 
   // Add User
@@ -160,28 +230,44 @@ $(document).ready(function () {
     const jobTitle = $('#jobtitle').val();
     const departmentID = $('#department-select').val();
 
-    // Makes sure that the fields below are filled out before submitting
-    if (firstName != '' && lastName != '' && email != '' && departmentID != 'Select Department') {
-      const userId = $(this).attr("id");
-
-      $.ajax({
-        url: "libs/php/insertUser.php",
-        method: 'POST',
-        data: new FormData(this),
-        contentType: false,
-        processData: false,
-        success: function (data) {
-          $('#user_form')[0].reset();
-          $('#userModal').modal('hide');
-          $('#user_table').DataTable().destroy();
-          fill_datatable()
-        }
-      });
-    }
-    else {
-      $.alert("First Name, Last Name, Email and Department are Required");
-    }
+    const userId = $(this).attr("id");
+    $.ajax({
+      url: "libs/php/insertUser.php",
+      method: 'POST',
+      data: new FormData(this),
+      contentType: false,
+      processData: false,
+      success: function (data) {
+        $('#user_form')[0].reset();
+        $('#userModal').modal('hide');
+        $('#user_table').DataTable().destroy();
+        fill_user_table()
+      }
+    });
   });
+
+  // $('#cancel-add-user').click(function (event) {
+  //   event.preventDefault();
+  //   $.confirm({
+  //     title: 'Cancel?',
+  //     content: 'This form will be reset, do you still wish to cancel?',
+  //     buttons: {
+  //       yes: {
+  //         btnClass: 'btn-primary',
+  //         action: function () {
+  //           $.alert('Cancelled!');
+  //           $('#user_form')[0].reset();
+  //           $('#userModal').modal('hide');
+  //         },
+  //       },
+  //       no: {
+  //         btnClass: 'btn-secondary',
+  //         action: function () {
+  //         },
+  //       }
+  //     }
+  //   });
+  // });
 
   // Update user
   $(document).on('submit', '#user_edit_form', function (event) {
@@ -194,12 +280,12 @@ $(document).ready(function () {
     const userId = $('#user-edit-id').val();
 
     // Makes sure that the fields below are filled out before submitting
-    if (firstName != '' && lastName != '' && email != '' && departmentID != 'Select Department') {
+    if (firstName != '' && lastName != '' && jobTitle != '' && email != '' && departmentID != 'Select Department') {
       $.confirm({
-        title: 'Update User!',
-        content: `Are you sure you want to update the details of this user, current details will be replaced?`,
+        title: 'Update User?',
+        content: `Are you sure you want to update the details of ${firstName} ${lastName}, all previous details will be replaced?`,
         buttons: {
-          confirm: {
+          yes: {
             btnClass: 'btn-danger',
             action: function () {
               $.ajax({
@@ -214,17 +300,17 @@ $(document).ready(function () {
                   department: departmentID
                 },
                 success: function (data) {
-                  $('#user_edit_form')[0].reset();
                   $('#userEditModal').modal('hide');
                   $('#user_table').DataTable().destroy();
-                  fill_datatable();
+                  fill_user_table();
                 }
               });
             },
           },
-          cancel: {
+          no: {
             btnClass: 'btn-secondary',
             action: function () {
+              $('#user_form')[0].reset();
             },
           }
         }
@@ -234,7 +320,6 @@ $(document).ready(function () {
       $.alert("First Name, Last Name, Email and Department are Required");
     }
   });
-
 
   // Adds Department after filling form
   $(document).on('submit', '#dep_form', function (event) {
@@ -256,9 +341,11 @@ $(document).ready(function () {
           $('#dep_form')[0].reset();
           $('#depModal').modal('hide');
           $('#user_table').DataTable().destroy();
-          fill_datatable()
-          $(".department-select").empty();
-          updateDepartments()
+          $('#dep_table').DataTable().destroy();
+          fill_dep_table();
+          fill_user_table();
+          emptyDepartments();
+          updateDepartments();
         }
       });
     }
@@ -267,10 +354,14 @@ $(document).ready(function () {
     }
   });
 
+  $('#cancel-add-department').click(function () {
+    $('#dep_form')[0].reset();
+  });
+
   // Adds location after filling form
   $(document).on('submit', '#loc_form', function (event) {
     event.preventDefault();
-    $(".location-select").empty();
+    emptyLocations();
     $('#loc-action').val("Add");
     $('#loc-operation').val("Add");
     $('#loc-title').text("Add Location");
@@ -289,7 +380,11 @@ $(document).ready(function () {
           $('#loc_form')[0].reset();
           $('#locModal').modal('hide');
           $('#user_table').DataTable().destroy();
-          fill_datatable();
+          $('#dep_table').DataTable().destroy();
+          $('#loc_table').DataTable().destroy();
+          fill_loc_table();
+          fill_dep_table();
+          fill_user_table();
           updateLocations();
         }
       });
@@ -297,6 +392,10 @@ $(document).ready(function () {
     else {
       $.alert("Location is Required");
     }
+  });
+
+  $('#cancel-add-location').click(function () {
+    $('#loc_form')[0].reset();
   });
 
   // Opens the update user modal and fills in the fields with the users current details
@@ -323,63 +422,87 @@ $(document).ready(function () {
   // Deletes a user by clicking the trash button
   $(document).on('click', '.delete-user', function () {
     const userId = $(this).attr("id");
-    $.confirm({
-      title: 'Delete User!',
-      content: 'Are you sure you want to delete this user?<br>This action cannot be undone!',
-      buttons: {
-        confirm: {
-          btnClass: 'btn-danger',
-          action: function () {
-            $.ajax({
-              url: "libs/php/deleteUser.php",
-              method: "POST",
-              data: { id: userId },
-              success: function (data) {
-                $('#user_table').DataTable().destroy();
-                fill_datatable()
-              }
-            });
-            $.alert('Deleted!');
-          },
-        },
-        cancel: {
-          btnClass: 'btn-secondary',
-          action: function () {
-          },
-        }
+    $.ajax({
+      url: "libs/php/getPersonnelByID.php",
+      method: "POST",
+      data: { id: userId },
+      dataType: "json",
+      success: function (data) {
+        const result = data.data.personnel[0];
+        const fName = result.firstName;
+        const lName = result.lastName;
+        $.confirm({
+          title: 'Delete User?',
+          content: `Are you sure you want to delete ${fName} ${lName}?`,
+          buttons: {
+            yes: {
+              btnClass: 'btn-danger',
+              action: function () {
+                $.ajax({
+                  url: "libs/php/deleteUser.php",
+                  method: "POST",
+                  data: { id: userId },
+                  success: function (data) {
+                    $('#user_table').DataTable().destroy();
+                    fill_user_table()
+                  }
+                });
+                $.alert('Deleted!');
+              },
+            },
+            no: {
+              btnClass: 'btn-secondary',
+              action: function () {
+              },
+            }
+          }
+        });
       }
     });
   });
 
-  // Updates the text field to match the selected department to edit to avoid users trying to change it to a blank field if only updating location
-  $('#dep-select-edit').change(function () {
-    $('#dep-edit-name').val($('#dep-select-edit option:selected').text());
-  })
+  // fills in the dep edit modal with this department info matching id.
+  $(document).on('click', '.update-department', function () {
+    const departmentId = $(this).attr("id");
+    $.ajax({
+      url: "libs/php/getDepartmentByID.php",
+      method: "POST",
+      data: { id: departmentId },
+      dataType: "json",
+      success: function (depData) {
+        console.log(depData)
+        const result = depData.data[0];
+        $('#depEditModal').modal('show');
+        $('#dep-edit-name').val(result.name);
+        $('#loc-edit-select').val(result.locationID);
+        $('#dep-id').val(result.id);
+      }
+    });
+  });
 
-  // Department Form Edit on Submit
+  // Update department on submit
   $(document).on('submit', '#dep_edit_form', function (event) {
     event.preventDefault();
-    const depId = $('#dep-select-edit').val();
-    const depName = $('#dep-edit-name').val();
-    const locId = $('#loc-edit-select').val();
-
+    const departmentName = $('#dep-edit-name').val();
+    const locationID = $('#loc-edit-select').val();
+    const depId = $('#dep-id').val();
     // Makes sure that the fields below are filled out before submitting
-    if (depName == '' && locId == null) {
+    if (departmentName == '') {
       $.alert({
         title: 'Cannot Update!',
         content: 'You must input new deparment name, or update the location.',
       });
-    } else if (depName == '') {
+    } else if (departmentName == '') {
       $.alert({
         title: 'Cannot Update!',
         content: 'You must input the new department name.',
       });
     } else {
       $.confirm({
-        title: 'Update Department!',
-        content: `Are you sure you want to update this department?<br>This action will update the details for all users in ${$('#dep-select-edit option:selected').text()}!`,
+        title: 'Update Department?',
+        content: `Are you sure you want to update this department?<br>This action will update the details for all users in ${departmentName}.`,
         buttons: {
-          confirm: {
+          Yes: {
             btnClass: 'btn-danger',
             action: function () {
               $.ajax({
@@ -387,23 +510,25 @@ $(document).ready(function () {
                 method: "POST",
                 data: {
                   depId: depId,
-                  locId: locId,
-                  name: depName
+                  locId: locationID,
+                  name: departmentName
                 },
                 dataType: "json",
                 success: function (data) {
                   $('#dep_edit_form')[0].reset();
                   $('#depEditModal').modal('hide');
-                  $(".department-select").empty();
+                  emptyDepartments();
                   $('#user_table').DataTable().destroy();
-                  fill_datatable()
-                  updateDepartments()
+                  $('#dep_table').DataTable().destroy();
+                  fill_dep_table();
+                  fill_user_table();
+                  updateDepartments();
                   $.alert('Updated!');
                 }
               });
             },
           },
-          cancel: {
+          No: {
             btnClass: 'btn-secondary',
             action: function () {
             },
@@ -414,50 +539,59 @@ $(document).ready(function () {
   });
 
   // Checks count to make sure no users in department, then if 0 removes department then updates select.
-  $(document).on('click', '#dep-del-btn', function (event) {
-    event.preventDefault();
-    const departmentId = $("#dep-sel").val();
+  $(document).on('click', '.delete-department', function () {
+    const departmentId = $(this).attr("id");
     $.ajax({
       url: "libs/php/countUsersInDepartment.php",
       method: "POST",
       dataType: "json",
       data: { id: departmentId },
       success: function (result) {
-        console.log(result.data);
         if (result.data != '0') {
           $.alert({
             title: 'Unable To Delete!',
             content: 'There are still users in this department, remove the users first or change their department.',
           });
         } else {
-          $.confirm({
-            title: 'Delete Department!',
-            content: 'Are you sure you want to delete this department?<br>This action cannot be undone!',
-            buttons: {
-              confirm: {
-                btnClass: 'btn-danger',
-                action: function () {
-                  $.ajax({
-                    url: "libs/php/deleteDepartment.php",
-                    method: "POST",
-                    data: { id: departmentId },
-                    success: function (data) {
-                      $('#dep_del_form')[0].reset();
-                      $('#depDeleteModal').modal('hide');
-                      $(".department-select").empty();
-                      $('#user_table').DataTable().destroy();
-                      fill_datatable()
-                      updateDepartments();
-                    }
-                  });
-                  $.alert('Department Deleted!');
-                },
-              },
-              cancel: {
-                btnClass: 'btn-secondary',
-                action: function () {
-                },
-              }
+          $.ajax({
+            url: "libs/php/getDepartmentByID.php",
+            method: "POST",
+            data: { id: departmentId },
+            dataType: "json",
+            success: function (depData) {
+              console.log(depData)
+              const result = depData.data[0];
+              const dName = result.name;
+              $.confirm({
+                title: 'Delete Department?',
+                content: `Are you sure you want to delete ${dName}?`,
+                buttons: {
+                  yes: {
+                    btnClass: 'btn-danger',
+                    action: function () {
+                      $.ajax({
+                        url: "libs/php/deleteDepartment.php",
+                        method: "POST",
+                        data: { id: departmentId },
+                        success: function (data) {
+                          emptyDepartments();
+                          $('#user_table').DataTable().destroy();
+                          $('#dep_table').DataTable().destroy();
+                          fill_dep_table();
+                          fill_user_table();
+                          updateDepartments();
+                        }
+                      });
+                      $.alert('Department Deleted!');
+                    },
+                  },
+                  no: {
+                    btnClass: 'btn-secondary',
+                    action: function () {
+                    },
+                  }
+                }
+              });
             }
           });
         }
@@ -465,29 +599,42 @@ $(document).ready(function () {
     })
   });
 
-  // Location Form Edit on Submit
+  // fills in the dep edit modal with this department info matching id.
+  $(document).on('click', '.update-location', function () {
+    const locationId = $(this).attr("id");
+    $.ajax({
+      url: "libs/php/getLocationByID.php",
+      method: "POST",
+      data: { id: locationId },
+      dataType: "json",
+      success: function (locData) {
+        console.log(locData)
+        const result = locData.data[0];
+        $('#locEditModal').modal('show');
+        $('#loc-edit-name').val(result.name);
+        $('#loc-id').val(result.id);
+      }
+    });
+  });
+
+  // Update location on Submit
   $(document).on('submit', '#loc_edit_form', function (event) {
     event.preventDefault();
-    const locId = $('#loc-select-edit').val();
+    const locId = $('#loc-id').val();
     const locName = $('#loc-edit-name').val();
 
     // Makes sure that the fields below are filled out before submitting
-    if (locName == '' && locId == null) {
+    if (locName == '') {
       $.alert({
         title: 'Cannot Update!',
-        content: "You must select the location you wish to update, and input it's new name.",
-      });
-    } else if (locName == '') {
-      $.alert({
-        title: 'Cannot Update!',
-        content: 'You must input the new location name.',
+        content: 'You must enter a new location name.',
       });
     } else {
       $.confirm({
-        title: 'Update Location!',
-        content: `Are you sure you want to update this location?<br>This action will update the location of all ${$('#loc-select-edit option:selected').text()} departments!`,
+        title: 'Update Location?',
+        content: `Are you sure you want to update this location?<br>This action will update the location for all departments in ${locName}.`,
         buttons: {
-          confirm: {
+          yes: {
             btnClass: 'btn-danger',
             action: function () {
               $.ajax({
@@ -501,17 +648,20 @@ $(document).ready(function () {
                 success: function (data) {
                   $('#loc_edit_form')[0].reset();
                   $('#locEditModal').modal('hide');
-                  $(".location-select").empty();
+                  emptyLocations();
                   $('#user_table').DataTable().destroy();
-                  fill_datatable();
-                  updateLocations()
+                  $('#dep_table').DataTable().destroy();
+                  $('#loc_table').DataTable().destroy();
+                  fill_loc_table();
+                  fill_dep_table();
+                  fill_user_table();
+                  updateLocations();
                   $.alert('Updated!');
                 }
               });
-
             },
           },
-          cancel: {
+          no: {
             btnClass: 'btn-secondary',
             action: function () {
             },
@@ -522,50 +672,60 @@ $(document).ready(function () {
   });
 
   // Deleting a location
-  $(document).on('click', '#loc-del-btn', function (event) {
-    event.preventDefault();
-    const locationId = $("#loc-sel").val();
+  $(document).on('click', '.delete-location', function () {
+    const locationId = $(this).attr("id");
     $.ajax({
       url: "libs/php/countDepartmentsInLocation.php",
       method: "POST",
       dataType: "json",
       data: { id: locationId },
       success: function (result) {
-        // console.log(result.data)
         if (result.data != "0") {
           $.alert({
             title: 'Unable To Delete!',
             content: 'There are still departments in this location , remove the departments first or change their location.',
           });
         } else {
-          $.confirm({
-            title: 'Delete Location!',
-            content: 'Are you sure you want to delete this location?<br>This action cannot be undone!',
-            buttons: {
-              confirm: {
-                btnClass: 'btn-danger',
-                action: function () {
-                  $.ajax({
-                    url: "libs/php/deleteLocation.php",
-                    method: "POST",
-                    data: { id: locationId },
-                    success: function (data) {
-                      $('#loc_del_form')[0].reset();
-                      $('#locDeleteModal').modal('hide');
-                      $('#user_table').DataTable().destroy();
-                      fill_datatable()
-                      $(".location-select").empty();
-                      updateLocations();
-                    }
-                  });
-                  $.alert('Location Deleted!');
-                },
-              },
-              cancel: {
-                btnClass: 'btn-secondary',
-                action: function () {
-                },
-              }
+          $.ajax({
+            url: "libs/php/getLocationByID.php",
+            method: "POST",
+            data: { id: locationId },
+            dataType: "json",
+            success: function (locData) {
+              const result = locData.data[0];
+              const lName = result.name;
+              $.confirm({
+                title: 'Delete Location?',
+                content: `Are you sure you want to delete ${lName}?`,
+                buttons: {
+                  yes: {
+                    btnClass: 'btn-danger',
+                    action: function () {
+                      $.ajax({
+                        url: "libs/php/deleteLocation.php",
+                        method: "POST",
+                        data: { id: locationId },
+                        success: function (data) {
+                          $('#user_table').DataTable().destroy();
+                          $('#dep_table').DataTable().destroy();
+                          $('#loc_table').DataTable().destroy();
+                          fill_loc_table();
+                          fill_dep_table();
+                          fill_user_table();
+                          emptyLocations();
+                          updateLocations();
+                        }
+                      });
+                      $.alert('Location Deleted!');
+                    },
+                  },
+                  no: {
+                    btnClass: 'btn-secondary',
+                    action: function () {
+                    },
+                  }
+                }
+              });
             }
           });
         }
